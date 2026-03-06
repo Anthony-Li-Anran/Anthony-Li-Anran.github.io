@@ -1,6 +1,6 @@
 ---
 permalink: /
-title: "Anran Li‘s Personal Website"
+title: "Anran Li's Personal Website"
 author_profile: true
 ---
 
@@ -8,7 +8,7 @@ Hello, I'm **Anran Li (Anthony Li)** 🎉
 
 As an undergraduate student majoring in Data Science at Shanghai University of Finance and Economics, I'm passionate about **Artificial Intelligence** and **Multi-Agent Systems**, exploring how these technologies can solve real-world problems. Being an INTJ, I enjoy diving deep into complex problems and finding innovative solutions.
 
-Currently, I'm actively learning and researching in the field of LLM-based agent frameworks and their applications. I'm taking Professor Andrew Ng's CS229 course on Machine Learning online, and studying fundamental knowledge about Large Language Model architectures to build a solid foundation for my future research work.
+Currently actively learning and researching in the field of LLM-based agent frameworks and their applications, while taking Professor Andrew Ng's CS229 course on Machine Learning online to build a solid foundation for future research work.
 
 ## Website Overview
 
