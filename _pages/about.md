@@ -27,6 +27,7 @@ graph TD
     A --> E[CV]
     A --> F[Blog Posts]
     A --> G[Guestbook]
+    A --> H[Interests]
     
     B --> B1[Technical & Research Projects]
     C --> C1[Academic Publications]
@@ -34,6 +35,7 @@ graph TD
     E --> E1[Curriculum Vitae]
     F --> F1[Personal Blog Articles]
     G --> G1[Messages & Comments]
+    H --> H1[Research & Personal Interests]
     
     style A fill:#e1f5ff
     style B fill:#fff4e6
@@ -42,6 +44,7 @@ graph TD
     style E fill:#fff4e6
     style F fill:#fff4e6
     style G fill:#fff4e6
+    style H fill:#fff4e6
 ```
 
 <details>
@@ -72,6 +75,11 @@ graph TD
 <details>
   <summary>📧 Guestbook</summary>
   A space for visitors to leave messages, comments, or questions. Feel free to connect with me here!
+</details>
+
+<details>
+  <summary>🎯 Interests</summary>
+  My research and personal interests, including work in Large Language Models, AI Agents, Data Science, as well as hobbies like music, gaming, swimming, and board games.
 </details>
 
 ---

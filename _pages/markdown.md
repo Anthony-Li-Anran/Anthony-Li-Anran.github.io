@@ -61,6 +61,12 @@ A space for visitors to:
 
 Comments are powered by [giscus](https://giscus.app/) and require a GitHub account to participate.
 
+### Interests
+My research and personal interests, including:
+- **Research Interests**: Large Language Models (LLMs), AI Agents, Data Science
+- **Personal Interests**: Music (violin, J-pop), Gaming (mobile and 3A games), Movies & TV Shows
+- **Hobbies**: Swimming, Board Games (Catan, Splendor)
+
 ## How to Navigate
 
 - Use the navigation bar at the top to access different sections
