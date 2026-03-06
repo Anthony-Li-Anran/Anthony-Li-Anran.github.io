@@ -48,7 +48,7 @@ graph TD
 ```
 
 <details>
-  <summary>� CV</summary>
+  <summary>📄 CV</summary>
   My curriculum vitae and professional background, providing a comprehensive overview of my education, skills, and experiences.
 </details>
 
@@ -58,7 +58,7 @@ graph TD
 </details>
 
 <details>
-  <summary>� Projects</summary>
+  <summary>📁 Projects</summary>
   A collection of my technical and research projects, showcasing my practical work in data science, AI, and multi-agent systems. Each project includes detailed descriptions, technology stack, and links to code repositories.
 </details>
 
