@@ -21,21 +21,21 @@ config:
     fontFamily: 'Comic Sans MS'
 ---
 graph TD
-    A[My Personal Website] --> B[Projects]
-    A --> C[Publications]
-    A --> D[Learning]
-    A --> E[CV]
+    A[My Personal Website] --> B[CV]
+    A --> C[Learning]
+    A --> D[Projects]
+    A --> E[Publications]
     A --> F[Blog Posts]
-    A --> G[Guestbook]
-    A --> H[Interests]
+    A --> G[Interests]
+    A --> H[Guestbook]
     
-    B --> B1[Technical & Research Projects]
-    C --> C1[Academic Publications]
-    D --> D1[Learning Notes & Resources]
-    E --> E1[Curriculum Vitae]
+    B --> B1[Curriculum Vitae]
+    C --> C1[Learning Notes & Resources]
+    D --> D1[Technical & Research Projects]
+    E --> E1[Academic Publications]
     F --> F1[Personal Blog Articles]
-    G --> G1[Messages & Comments]
-    H --> H1[Research & Personal Interests]
+    G --> G1[Research & Personal Interests]
+    H --> H1[Messages & Comments]
     
     style A fill:#e1f5ff
     style B fill:#fff4e6
@@ -48,13 +48,8 @@ graph TD
 ```
 
 <details>
-  <summary>📁 Projects</summary>
-  A collection of my technical and research projects, showcasing my practical work in data science, AI, and multi-agent systems. Each project includes detailed descriptions, technology stack, and links to code repositories.
-</details>
-
-<details>
-  <summary>📚 Publications</summary>
-  My academic publications and research work in the field of data science and artificial intelligence. 
+  <summary>� CV</summary>
+  My curriculum vitae and professional background, providing a comprehensive overview of my education, skills, and experiences.
 </details>
 
 <details>
@@ -63,8 +58,13 @@ graph TD
 </details>
 
 <details>
-  <summary>📄 CV</summary>
-  My curriculum vitae and professional background, providing a comprehensive overview of my education, skills, and experiences.
+  <summary>� Projects</summary>
+  A collection of my technical and research projects, showcasing my practical work in data science, AI, and multi-agent systems. Each project includes detailed descriptions, technology stack, and links to code repositories.
+</details>
+
+<details>
+  <summary>📚 Publications</summary>
+  My academic publications and research work in field of data science and artificial intelligence. 
 </details>
 
 <details>
@@ -73,13 +73,13 @@ graph TD
 </details>
 
 <details>
-  <summary>📧 Guestbook</summary>
-  A space for visitors to leave messages, comments, or questions. Feel free to connect with me here!
+  <summary>🎯 Interests</summary>
+  My research and personal interests, including work in Large Language Models, AI Agents, Data Science, as well as hobbies like music, gaming, swimming, and board games.
 </details>
 
 <details>
-  <summary>🎯 Interests</summary>
-  My research and personal interests, including work in Large Language Models, AI Agents, Data Science, as well as hobbies like music, gaming, swimming, and board games.
+  <summary>📧 Guestbook</summary>
+  A space for visitors to leave messages, comments, or questions. Feel free to connect with me here!
 </details>
 
 ---
