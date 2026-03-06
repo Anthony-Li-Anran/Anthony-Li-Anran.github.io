@@ -1,0 +1,54 @@
+<!-- start custom footer snippets -->
+
+<!-- Toast notification element -->
+<div id="toast" class="toast">
+  <span id="toast-message"></span>
+</div>
+
+<!-- Support for MatJax -->
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true
+  },
+  options: {
+    skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+  }
+};
+</script>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<!-- Support for Mermaid -->
+<script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({startOnLoad:true, theme:'default'});
+    await mermaid.run({querySelector:'code.language-mermaid'});
+</script>
+
+<!-- Language switch functionality -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const langToggle = document.getElementById('lang-toggle');
+    const toast = document.getElementById('toast');
+    const toastMessage = document.getElementById('toast-message');
+    
+    if (langToggle) {
+        langToggle.addEventListener('click', function() {
+            showToast('Language switch feature is under development');
+        });
+    }
+    
+    function showToast(message) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 3000);
+    }
+});
+</script>
+
+<!-- end custom footer snippets -->
