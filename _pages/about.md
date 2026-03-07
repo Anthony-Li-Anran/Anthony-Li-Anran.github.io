@@ -17,7 +17,7 @@ Currently actively learning and researching in the field of LLM-based agent fram
 config:
   theme: 'default'
   themeVariables:
-    fontSize: '24px'
+    fontSize: '22px'
     fontFamily: 'Comic Sans MS'
 ---
 graph TD
