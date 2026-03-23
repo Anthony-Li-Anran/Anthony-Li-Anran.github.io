@@ -37,14 +37,14 @@ graph TD
     G --> G1[Research & Personal Interests]
     H --> H1[Messages & Comments]
     
-    style A fill:#e1f5ff
-    style B fill:#fff4e6
-    style C fill:#fff4e6
-    style D fill:#fff4e6
-    style E fill:#fff4e6
-    style F fill:#fff4e6
-    style G fill:#fff4e6
-    style H fill:#fff4e6
+    style A fill:#004E66
+    style B fill:#51A3BC
+    style C fill:#51A3BC
+    style D fill:#51A3BC
+    style E fill:#51A3BC
+    style F fill:#51A3BC
+    style G fill:#51A3BC
+    style H fill:#FCBE32
 ```
 
 <details>
