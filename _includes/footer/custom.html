@@ -29,138 +29,29 @@ window.MathJax = {
 
 <!-- Language switch functionality -->
 <script>
-// Debug: Log script loading
-console.log('Language switch script loaded');
-
-// Language data
-const languageData = {
-    en: {
-        nav: {
-            home: "Homepage",
-            guide: "Guide",
-            cv: "CV",
-            learning: "Learning",
-            projects: "Projects",
-            publications: "Publications",
-            blog: "Blog Posts",
-            interests: "Interests",
-            guestbook: "Guestbook"
-        },
-        author: {
-            name: "Anran Li(Anthony Li)",
-            bio: "Undergraduate student in Data Science at Shanghai University of Finance and Economics. Interested in LLM and agent-related research, currently learning relevant theories."
-        }
-    },
-    zh: {
-        nav: {
-            home: "首页",
-            guide: "指南",
-            cv: "简历",
-            learning: "学习",
-            projects: "项目",
-            publications: "出版物",
-            blog: "博客",
-            interests: "兴趣",
-            guestbook: "留言板"
-        },
-        author: {
-            name: "李安然（Anthony Li）",
-            bio: "上海财经大学数据科学专业本科生。对 LLM 和智能体相关研究感兴趣，目前正在学习相关理论。"
-        }
-    }
-};
-
-// Initialize language
-let currentLang = localStorage.getItem('language') || 'en';
-console.log('Current language:', currentLang);
-
-// Apply language function (global scope)
-function applyLanguage(lang) {
-    console.log('Applying language:', lang);
-    // Update navigation links
-    const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
-    const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
-    
-    navLinks.forEach((link, index) => {
-        if (index < navOrder.length && navOrder[index] in languageData[lang].nav) {
-            link.textContent = languageData[lang].nav[navOrder[index]];
-        }
-    });
-    
-    // Update language toggle button
-    const langToggleSpan = document.querySelector('#lang-toggle span');
-    if (langToggleSpan) {
-        langToggleSpan.textContent = lang === 'en' ? '中/En' : 'En/中';
-    }
-    
-    // Update author profile
-    const authorName = document.querySelector('.author__name');
-    const authorBio = document.querySelector('.author__bio');
-    if (authorName && languageData[lang].author.name) {
-        authorName.textContent = languageData[lang].author.name;
-    }
-    if (authorBio && languageData[lang].author.bio) {
-        authorBio.textContent = languageData[lang].author.bio;
-    }
-    
-    // Update page content with data-lang attributes
-    const langElements = document.querySelectorAll('[data-lang-en]');
-    langElements.forEach(el => {
-        const enText = el.getAttribute('data-lang-en');
-        const zhText = el.getAttribute('data-lang-zh');
-        el.innerHTML = lang === 'zh' ? zhText : enText;
-    });
-}
-
-// Debug: Log function definition
-console.log('applyLanguage function defined:', typeof applyLanguage);
-
-// Show toast notification
-function showToast(message) {
-    const toast = document.getElementById('toast');
-    const toastMessage = document.getElementById('toast-message');
-    
-    if (toast && toastMessage) {
-        toastMessage.textContent = message;
-        toast.classList.add('show');
-        
-        setTimeout(function() {
-            toast.classList.remove('show');
-        }, 2000);
-    }
-}
-
-// Initialize language switch
+// Language switch function using page redirection
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded');
     const langToggle = document.getElementById('lang-toggle');
-    console.log('lang-toggle element:', langToggle);
-    
-    // Apply initial language
-    applyLanguage(currentLang);
-    
-    // Re-apply language after a delay to ensure Jekyll rendering is complete
-    setTimeout(function() {
-        applyLanguage(currentLang);
-    }, 100);
-    
-    // Set up interval to periodically re-apply language (more reliable than MutationObserver)
-    setInterval(function() {
-        applyLanguage(currentLang);
-    }, 500); // Check every 500ms
     
     if (langToggle) {
         const langToggleLink = langToggle.querySelector('a');
-        console.log('lang-toggle link:', langToggleLink);
         if (langToggleLink) {
             langToggleLink.addEventListener('click', function(e) {
                 e.preventDefault();
-                console.log('Language toggle clicked');
-                // Switch language
-                currentLang = currentLang === 'en' ? 'zh' : 'en';
-                localStorage.setItem('language', currentLang);
-                applyLanguage(currentLang);
-                showToast('Language switched to ' + (currentLang === 'en' ? 'English' : '中文'));
+                
+                // Get current URL
+                const currentUrl = window.location.pathname;
+                
+                // Check if currently on Chinese page
+                if (currentUrl.startsWith('/zh/')) {
+                    // Redirect to English version
+                    const englishUrl = currentUrl.replace('/zh/', '/');
+                    window.location.href = englishUrl;
+                } else {
+                    // Redirect to Chinese version
+                    const chineseUrl = '/zh' + (currentUrl === '/' ? '/' : currentUrl);
+                    window.location.href = chineseUrl;
+                }
             });
         }
     }
