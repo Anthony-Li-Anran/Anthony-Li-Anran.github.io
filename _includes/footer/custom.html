@@ -78,6 +78,33 @@ document.addEventListener('DOMContentLoaded', function() {
     // Apply initial language
     applyLanguage(currentLang);
     
+    // Re-apply language after a delay to ensure Jekyll rendering is complete
+    setTimeout(function() {
+        applyLanguage(currentLang);
+    }, 100);
+    
+    // Watch for DOM changes and re-apply language when navigation is re-rendered
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes) {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === 1) { // Element node
+                        const navLinks = node.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
+                        if (navLinks.length > 0) {
+                            applyLanguage(currentLang);
+                        }
+                    }
+                });
+            }
+        });
+    });
+    
+    // Start observing the document body for changes
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+    
     if (langToggle) {
         langToggle.addEventListener('click', function() {
             // Switch language
