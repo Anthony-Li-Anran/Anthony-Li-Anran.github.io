@@ -25,7 +25,7 @@ author:
   # Biographic information
   avatar           : "avatar.jpg"
   name             : "Anran Li(Anthony Li)"
-  pronouns         : "he/him"# example: "she/her"  
+  # pronouns         : "he/him"# example: "she/her"  
   bio              : "Undergraduate student in Data Science at Shanghai University of Finance and Economics. Interested in LLM and agent-related research, currently learning relevant theories."
   location         : "Shanghai, China"
   university       : "Shanghai University of Finance and Economics"
