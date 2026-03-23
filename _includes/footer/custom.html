@@ -29,6 +29,9 @@ window.MathJax = {
 
 <!-- Language switch functionality -->
 <script>
+// Debug: Log script loading
+console.log('Language switch script loaded');
+
 // Language data
 const languageData = {
     en: {
@@ -69,9 +72,11 @@ const languageData = {
 
 // Initialize language
 let currentLang = localStorage.getItem('language') || 'en';
+console.log('Current language:', currentLang);
 
 // Apply language function (global scope)
 function applyLanguage(lang) {
+    console.log('Applying language:', lang);
     // Update navigation links
     const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
     const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
@@ -107,6 +112,9 @@ function applyLanguage(lang) {
     });
 }
 
+// Debug: Log function definition
+console.log('applyLanguage function defined:', typeof applyLanguage);
+
 // Show toast notification
 function showToast(message) {
     const toast = document.getElementById('toast');
@@ -124,7 +132,9 @@ function showToast(message) {
 
 // Initialize language switch
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded');
     const langToggle = document.getElementById('lang-toggle');
+    console.log('lang-toggle element:', langToggle);
     
     // Apply initial language
     applyLanguage(currentLang);
@@ -141,9 +151,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (langToggle) {
         const langToggleLink = langToggle.querySelector('a');
+        console.log('lang-toggle link:', langToggleLink);
         if (langToggleLink) {
             langToggleLink.addEventListener('click', function(e) {
                 e.preventDefault();
+                console.log('Language toggle clicked');
                 // Switch language
                 currentLang = currentLang === 'en' ? 'zh' : 'en';
                 localStorage.setItem('language', currentLang);
