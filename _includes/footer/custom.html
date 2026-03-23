@@ -70,10 +70,61 @@ const languageData = {
 // Initialize language
 let currentLang = localStorage.getItem('language') || 'en';
 
-document.addEventListener('DOMContentLoaded', function() {
-    const langToggle = document.getElementById('lang-toggle');
+// Apply language function (global scope)
+function applyLanguage(lang) {
+    // Update navigation links
+    const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
+    const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
+    
+    navLinks.forEach((link, index) => {
+        if (index < navOrder.length && navOrder[index] in languageData[lang].nav) {
+            link.textContent = languageData[lang].nav[navOrder[index]];
+        }
+    });
+    
+    // Update language toggle button
+    const langToggleSpan = document.querySelector('#lang-toggle span');
+    if (langToggleSpan) {
+        langToggleSpan.textContent = lang === 'en' ? '中/En' : 'En/中';
+    }
+    
+    // Update author profile
+    const authorName = document.querySelector('.author__name');
+    const authorBio = document.querySelector('.author__bio');
+    if (authorName && languageData[lang].author.name) {
+        authorName.textContent = languageData[lang].author.name;
+    }
+    if (authorBio && languageData[lang].author.bio) {
+        authorBio.textContent = languageData[lang].author.bio;
+    }
+    
+    // Update page content with data-lang attributes
+    const langElements = document.querySelectorAll('[data-lang-en]');
+    langElements.forEach(el => {
+        const enText = el.getAttribute('data-lang-en');
+        const zhText = el.getAttribute('data-lang-zh');
+        el.innerHTML = lang === 'zh' ? zhText : enText;
+    });
+}
+
+// Show toast notification
+function showToast(message) {
     const toast = document.getElementById('toast');
     const toastMessage = document.getElementById('toast-message');
+    
+    if (toast && toastMessage) {
+        toastMessage.textContent = message;
+        toast.classList.add('show');
+        
+        setTimeout(function() {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+}
+
+// Initialize language switch
+document.addEventListener('DOMContentLoaded', function() {
+    const langToggle = document.getElementById('lang-toggle');
     
     // Apply initial language
     applyLanguage(currentLang);
@@ -89,58 +140,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 500); // Check every 500ms
     
     if (langToggle) {
-        langToggle.addEventListener('click', function() {
-            // Switch language
-            currentLang = currentLang === 'en' ? 'zh' : 'en';
-            localStorage.setItem('language', currentLang);
-            applyLanguage(currentLang);
-            showToast('Language switched to ' + (currentLang === 'en' ? 'English' : '中文'));
-        });
-    }
-    
-    function showToast(message) {
-        toastMessage.textContent = message;
-        toast.classList.add('show');
-        
-        setTimeout(function() {
-            toast.classList.remove('show');
-        }, 2000);
-    }
-    
-    function applyLanguage(lang) {
-        // Update navigation links
-        const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
-        const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
-        
-        navLinks.forEach((link, index) => {
-            if (index < navOrder.length && navOrder[index] in languageData[lang].nav) {
-                link.textContent = languageData[lang].nav[navOrder[index]];
-            }
-        });
-        
-        // Update language toggle button
-        const langToggleSpan = document.querySelector('#lang-toggle span');
-        if (langToggleSpan) {
-            langToggleSpan.textContent = lang === 'en' ? '中/En' : 'En/中';
+        const langToggleLink = langToggle.querySelector('a');
+        if (langToggleLink) {
+            langToggleLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Switch language
+                currentLang = currentLang === 'en' ? 'zh' : 'en';
+                localStorage.setItem('language', currentLang);
+                applyLanguage(currentLang);
+                showToast('Language switched to ' + (currentLang === 'en' ? 'English' : '中文'));
+            });
         }
-        
-        // Update author profile
-        const authorName = document.querySelector('.author__name');
-        const authorBio = document.querySelector('.author__bio');
-        if (authorName && languageData[lang].author.name) {
-            authorName.textContent = languageData[lang].author.name;
-        }
-        if (authorBio && languageData[lang].author.bio) {
-            authorBio.textContent = languageData[lang].author.bio;
-        }
-        
-        // Update page content with data-lang attributes
-        const langElements = document.querySelectorAll('[data-lang-en]');
-        langElements.forEach(el => {
-            const enText = el.getAttribute('data-lang-en');
-            const zhText = el.getAttribute('data-lang-zh');
-            el.innerHTML = lang === 'zh' ? zhText : enText;
-        });
     }
 });
 </script>
