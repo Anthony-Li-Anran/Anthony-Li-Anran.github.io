@@ -29,9 +29,71 @@ window.MathJax = {
 
 <!-- Language switch functionality -->
 <script>
+// Language data for navigation and author
+const languageData = {
+    en: {
+        nav: {
+            guide: "Guide",
+            cv: "CV",
+            learning: "Learning",
+            projects: "Projects",
+            publications: "Publications",
+            blog: "Blog Posts",
+            interests: "Interests",
+            guestbook: "Guestbook"
+        },
+        author: {
+            name: "Anran Li(Anthony Li)",
+            bio: "Undergraduate student in Data Science at Shanghai University of Finance and Economics. Interested in LLM and agent-related research, currently learning relevant theories."
+        }
+    },
+    zh: {
+        nav: {
+            guide: "指南",
+            cv: "简历",
+            learning: "学习",
+            projects: "项目",
+            publications: "出版物",
+            blog: "博客",
+            interests: "兴趣",
+            guestbook: "留言板"
+        },
+        author: {
+            name: "李安然（Anthony Li）",
+            bio: "上海财经大学数据科学专业本科生。对 LLM 和智能体相关研究感兴趣，目前正在学习相关理论。"
+        }
+    }
+};
+
 // Language switch function using page redirection
 document.addEventListener('DOMContentLoaded', function() {
     const langToggle = document.getElementById('lang-toggle');
+    
+    // Check if on Chinese page
+    const currentUrl = window.location.pathname;
+    const isChinesePage = currentUrl.startsWith('/zh/');
+    
+    // Update navigation links
+    if (isChinesePage) {
+        const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
+        const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
+        
+        navLinks.forEach((link, index) => {
+            if (index < navOrder.length && navOrder[index] in languageData.zh.nav) {
+                link.textContent = languageData.zh.nav[navOrder[index]];
+            }
+        });
+        
+        // Update author profile
+        const authorName = document.querySelector('.author__name');
+        const authorBio = document.querySelector('.author__bio');
+        if (authorName) {
+            authorName.textContent = languageData.zh.author.name;
+        }
+        if (authorBio) {
+            authorBio.textContent = languageData.zh.author.bio;
+        }
+    }
     
     if (langToggle) {
         const langToggleLink = langToggle.querySelector('a');
