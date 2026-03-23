@@ -83,27 +83,10 @@ document.addEventListener('DOMContentLoaded', function() {
         applyLanguage(currentLang);
     }, 100);
     
-    // Watch for DOM changes and re-apply language when navigation is re-rendered
-    const observer = new MutationObserver(function(mutations) {
-        mutations.forEach(function(mutation) {
-            if (mutation.addedNodes) {
-                mutation.addedNodes.forEach(function(node) {
-                    if (node.nodeType === 1) { // Element node
-                        const navLinks = node.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
-                        if (navLinks.length > 0) {
-                            applyLanguage(currentLang);
-                        }
-                    }
-                });
-            }
-        });
-    });
-    
-    // Start observing the document body for changes
-    observer.observe(document.body, {
-        childList: true,
-        subtree: true
-    });
+    // Set up interval to periodically re-apply language (more reliable than MutationObserver)
+    setInterval(function() {
+        applyLanguage(currentLang);
+    }, 500); // Check every 500ms
     
     if (langToggle) {
         langToggle.addEventListener('click', function() {
