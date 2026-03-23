@@ -71,13 +71,34 @@ document.addEventListener('DOMContentLoaded', function() {
     const langToggle = document.getElementById('lang-toggle');
     console.log('lang-toggle element:', langToggle);
     
-    // Check if on Chinese page
+    // Get saved language preference or default to English
+    const savedLang = localStorage.getItem('preferredLanguage') || 'en';
+    console.log('Saved language preference:', savedLang);
+    
+    // Get current URL
     const currentUrl = window.location.pathname;
     const isChinesePage = currentUrl.startsWith('/zh/');
+    const isEnglishPage = !isChinesePage;
     console.log('Current URL:', currentUrl);
     console.log('Is Chinese page:', isChinesePage);
+    console.log('Is English page:', isEnglishPage);
     
-    // Update navigation links
+    // Auto-redirect based on saved language preference
+    if (savedLang === 'zh' && isEnglishPage) {
+        // Redirect to Chinese version
+        const chineseUrl = '/zh' + (currentUrl === '/' ? '/' : currentUrl);
+        console.log('Auto-redirecting to Chinese URL:', chineseUrl);
+        window.location.href = chineseUrl;
+        return; // Don't execute the rest of the script
+    } else if (savedLang === 'en' && isChinesePage) {
+        // Redirect to English version
+        const englishUrl = currentUrl.replace('/zh/', '/');
+        console.log('Auto-redirecting to English URL:', englishUrl);
+        window.location.href = englishUrl;
+        return; // Don't execute the rest of the script
+    }
+    
+    // Update navigation links if on Chinese page
     if (isChinesePage) {
         const navLinks = document.querySelectorAll('.masthead__menu-item:not(.persist):not(.masthead__menu-item--lg) a');
         const navOrder = ['guide', 'cv', 'learning', 'projects', 'publications', 'blog', 'interests', 'guestbook'];
@@ -119,17 +140,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 const currentUrl = window.location.pathname;
                 console.log('Current URL before redirect:', currentUrl);
                 
-                // Check if currently on Chinese page
-                if (currentUrl.startsWith('/zh/')) {
-                    // Redirect to English version
-                    const englishUrl = currentUrl.replace('/zh/', '/');
-                    console.log('Redirecting to English URL:', englishUrl);
-                    window.location.href = englishUrl;
-                } else {
-                    // Redirect to Chinese version
+                // Determine new language
+                const newLang = isChinesePage ? 'en' : 'zh';
+                console.log('New language:', newLang);
+                
+                // Save language preference
+                localStorage.setItem('preferredLanguage', newLang);
+                console.log('Saved language preference:', newLang);
+                
+                // Redirect to new language version
+                if (newLang === 'zh') {
                     const chineseUrl = '/zh' + (currentUrl === '/' ? '/' : currentUrl);
                     console.log('Redirecting to Chinese URL:', chineseUrl);
                     window.location.href = chineseUrl;
+                } else {
+                    const englishUrl = currentUrl.replace('/zh/', '/');
+                    console.log('Redirecting to English URL:', englishUrl);
+                    window.location.href = englishUrl;
                 }
             });
         }
