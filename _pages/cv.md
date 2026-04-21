@@ -30,6 +30,7 @@ Coming soon...
 
 ### Completed Courses
 - All courses offered on the Kaggle platform.
+- CS229: Machine Learning (Stanford University, by Professor Andrew Ng)
 - Mathematical Analysis, Advanced Algebra, Probability Theory, Mathematical Statistics (currently in the process of learning)
 
 ## Projects

@@ -8,7 +8,7 @@ Hello, I'm <strong>Anran Li (Anthony Li)</strong> 🎉
 
 As an undergraduate student majoring in Data Science at Shanghai University of Finance and Economics, I'm passionate about <strong>Artificial Intelligence</strong> and <strong>Multi-Agent Systems</strong>, exploring how these technologies can solve real-world problems. Being an INTJ, I enjoy diving deep into complex problems and finding innovative solutions.
 
-Currently actively learning and researching in the field of LLM-based agent frameworks and their applications, while taking Professor Andrew Ng's CS229 course on Machine Learning online to build a solid foundation for future research work.
+I have recently completed Professor Andrew Ng's CS229 course on Machine Learning and Sebastian Raschka's "Build a Large Language Model (From Scratch)".
 
 ## Website Overview
 
