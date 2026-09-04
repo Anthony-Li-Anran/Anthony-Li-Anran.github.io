@@ -272,6 +272,37 @@ $$
 
 Default parameters: \\(\beta_1 = 0.9\\), \\(\beta_2 = 0.999\\), \\(\epsilon = 10^{-8}\\)
 
+
+### 6.5 Muon (MomentUm Orthogonalized by Newton-Schulz)
+
+Muon is a recently proposed optimizer that orthogonalizes gradient matrices before applying momentum. Introduced by Keller Jordan et al., it has demonstrated remarkable efficiency in training large transformer models.
+
+**Core idea:** Unlike optimizers that operate element-wise (Adam, SGD), Muon treats weight gradients as matrices and applies a spectral transformation — orthogonalization via Newton-Schulz iteration — to preserve gradient structure across matrix dimensions.
+
+**Algorithm steps:**
+
+1. Compute gradient \(G\) for a weight matrix
+2. Orthogonalize \(G\) using Newton-Schulz iteration:
+   - For a tall matrix: \(X \leftarrow X \left(3I - X^T X\right) / 2\)
+   - For a wide matrix: \(X \leftarrow \left(3I - X X^T\right) / 2 \; X\)
+   - Repeat ~5 iterations for approximate orthogonality
+3. Apply momentum: \(B_t = \beta B_{t-1} + G_{\text{orth}}\)
+4. Update weights: \(\theta_{t+1} = \theta_t - \alpha B_t\)
+
+**Key characteristics:**
+
+- Orthogonalization decorrelates gradient directions, leading to more efficient updates
+- Particularly effective for transformer weight matrices (Q, K, V, projection layers)
+- Consistently outperforms Adam in large-scale LLM training benchmarks
+- Works well with very high learning rates (e.g., \(\alpha \approx 0.02\))
+- Applies only to 2D parameter matrices; scalar parameters (biases, LayerNorm) use standard SGD or Adam
+
+**Newton-Schulz iteration:**
+This is the core mechanism. Given a matrix \(X\) whose singular values lie in \((0, 1)\), repeated application of the Newton-Schulz formula drives all singular values toward 1, making the matrix approximately orthogonal. The iteration converges quadratically.
+
+**Practical usage:**
+Muon has been validated in training runs such as modded-nanoGPT, where it achieved state-of-the-art training efficiency for GPT-2 scale models. The optimizer is typically paired with a learning rate scheduler and used alongside AdamW for non-matrix parameters.
+
 ## 7. Debugging Techniques
 
 ### 7.1 Gradient Checking
