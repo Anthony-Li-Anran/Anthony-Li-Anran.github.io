@@ -28,27 +28,27 @@ $$
 $$
 
 Where:
-- \\(\theta_t\\): Parameter vector at iteration \\(t\\)
-- \\(\alpha\\): Learning rate, controlling the step size
-- \\(\nabla J(\theta_t)\\): Gradient (derivative) of the loss function \\(J\\) at \\(\theta_t\\)
-- \\(\theta_{t+1}\\): Updated parameter
+- $\theta_t$: Parameter vector at iteration $t$
+- $\alpha$: Learning rate, controlling the step size
+- $\nabla J(\theta_t)$: Gradient (derivative) of the loss function $J$ at $\theta_t$
+- $\theta_{t+1}$: Updated parameter
 
 ### 2.2 Gradient Descent for Univariate Functions
 
-For a univariate function \\(f(x)\\), the update formula simplifies to:
+For a univariate function $f(x)$, the update formula simplifies to:
 
 $$
 x_{t+1} = x_t - \alpha \cdot f'(x_t)
 $$
 
-**Example:** Minimizing \\(f(x) = x^2\\)
+**Example:** Minimizing $f(x) = x^2$
 
-- Derivative: \\(f'(x) = 2x\\)
-- Update rule: \\(x_{t+1} = x_t - \alpha \cdot 2x_t = x_t(1 - 2\alpha)\\)
+- Derivative: $f'(x) = 2x$
+- Update rule: $x_{t+1} = x_t - \alpha \cdot 2x_t = x_t(1 - 2\alpha)$
 
 ### 2.3 Gradient Descent for Multivariate Functions
 
-For a multivariate function \\(J(\theta_1, \theta_2, ..., \theta_n)\\), the gradient is a vector composed of partial derivatives:
+For a multivariate function $J(\theta_1, \theta_2, ..., \theta_n)$, the gradient is a vector composed of partial derivatives:
 
 $$
 \nabla J = \begin{bmatrix}
@@ -69,16 +69,16 @@ $$
 
 ## 3. Learning Rate Selection
 
-The learning rate \\(\alpha\\) is the most important hyperparameter in gradient descent, determining the step size of each iteration.
+The learning rate $\alpha$ is the most important hyperparameter in gradient descent, determining the step size of each iteration.
 
 ### 3.1 Impact of Learning Rate
 
 | Learning Rate Size | Phenomenon | Result |
 |-------------------|------------|--------|
-| Too small (\\(\alpha \approx 0.01\\)) | Step size too small | Slow convergence, long training time |
-| Appropriate (\\(\alpha \approx 0.1\\)) | Moderate step size | Fast and stable convergence |
-| Too large (\\(\alpha \approx 0.5\\)) | Step size too large | Oscillation near optimal solution |
-| Excessive (\\(\alpha > 1\\)) | Extremely large step size | Divergence, unable to converge |
+| Too small ($\alpha \approx 0.01$) | Step size too small | Slow convergence, long training time |
+| Appropriate ($\alpha \approx 0.1$) | Moderate step size | Fast and stable convergence |
+| Too large ($\alpha \approx 0.5$) | Step size too large | Oscillation near optimal solution |
+| Excessive ($\alpha > 1$) | Extremely large step size | Divergence, unable to converge |
 
 ![Learning Rate Impact](/images/2026_3_6-figure3.png)
 
@@ -138,7 +138,7 @@ $$
 \nabla J(\theta) = \frac{1}{b} \sum_{i=1}^{b} \nabla J_i(\theta)
 $$
 
-Where \\(b\\) is the batch size.
+Where $b$ is the batch size.
 
 **Characteristics:**
 - ✅ Balances BGD stability and SGD speed
@@ -154,8 +154,8 @@ Where \\(b\\) is the batch size.
 In non-convex functions, gradient descent may get trapped in local minima and cannot reach the global minimum.
 
 **Mathematical conditions:**
-- Local minimum: \\(\nabla f(x) = 0\\) and Hessian matrix is positive definite
-- Global minimum: \\(f(x^*) \leq f(x)\\) for all \\(x\\)
+- Local minimum: $\nabla f(x) = 0$ and Hessian matrix is positive definite
+- Global minimum: $f(x^*) \leq f(x)$ for all $x$
 
 **Coping strategies:**
 - Random initialization (run multiple times and select the best)
@@ -172,9 +172,9 @@ $$
 f(x, y) = x^2 - y^2
 $$
 
-At the origin \\((0, 0)\\):
-- \\(\nabla f = (0, 0)\\)
-- Minimum along \\(x\\) direction, maximum along \\(y\\) direction
+At the origin $(0, 0)$:
+- $\nabla f = (0, 0)$
+- Minimum along $x$ direction, maximum along $y$ direction
 
 **Coping strategies:**
 - Second-order methods (Newton's method)
@@ -212,7 +212,7 @@ $$
 
 ### 6.1 Momentum Method
 
-Introduces velocity variable \\(v\\) to accumulate historical gradients:
+Introduces velocity variable $v$ to accumulate historical gradients:
 
 $$
 v_t = \beta v_{t-1} + \alpha \nabla J(\theta_t)
@@ -222,7 +222,7 @@ $$
 \theta_{t+1} = \theta_t - v_t
 $$
 
-Where \\(\beta \in [0, 1]\\) is the momentum coefficient (typically 0.9).
+Where $\beta \in [0, 1]$ is the momentum coefficient (typically 0.9).
 
 **Physical analogy:** Like a ball rolling down a hill, inertia helps overcome small pits (local minima).
 
@@ -234,7 +234,7 @@ $$
 \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{G_t + \epsilon}} \odot \nabla J(\theta_t)
 $$
 
-Where \\(G_t\\) is the cumulative sum of squared historical gradients.
+Where $G_t$ is the cumulative sum of squared historical gradients.
 
 **Characteristics:** Gives larger updates for sparse gradients.
 
@@ -270,7 +270,7 @@ $$
 \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t
 $$
 
-Default parameters: \\(\beta_1 = 0.9\\), \\(\beta_2 = 0.999\\), \\(\epsilon = 10^{-8}\\)
+Default parameters: $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$
 
 
 ### 6.5 Muon (MomentUm Orthogonalized by Newton-Schulz)
@@ -281,24 +281,24 @@ Muon is a recently proposed optimizer that orthogonalizes gradient matrices befo
 
 **Algorithm steps:**
 
-1. Compute gradient \(G\) for a weight matrix
-2. Orthogonalize \(G\) using Newton-Schulz iteration:
-   - For a tall matrix: \(X \leftarrow X \left(3I - X^T X\right) / 2\)
-   - For a wide matrix: \(X \leftarrow \left(3I - X X^T\right) / 2 \; X\)
+1. Compute gradient $G$ for a weight matrix
+2. Orthogonalize $G$ using Newton-Schulz iteration:
+   - For a tall matrix: $X \leftarrow X \left(3I - X^T X\right) / 2$
+   - For a wide matrix: $X \leftarrow \left(3I - X X^T\right) / 2 \; X$
    - Repeat ~5 iterations for approximate orthogonality
-3. Apply momentum: \(B_t = \beta B_{t-1} + G_{\text{orth}}\)
-4. Update weights: \(\theta_{t+1} = \theta_t - \alpha B_t\)
+3. Apply momentum: $B_t = \beta B_{t-1} + G_{\mathrm{orth}}$
+4. Update weights: $\theta_{t+1} = \theta_t - \alpha B_t$
 
 **Key characteristics:**
 
 - Orthogonalization decorrelates gradient directions, leading to more efficient updates
 - Particularly effective for transformer weight matrices (Q, K, V, projection layers)
 - Consistently outperforms Adam in large-scale LLM training benchmarks
-- Works well with very high learning rates (e.g., \(\alpha \approx 0.02\))
+- Works well with very high learning rates (e.g., $\alpha \approx 0.02$)
 - Applies only to 2D parameter matrices; scalar parameters (biases, LayerNorm) use standard SGD or Adam
 
 **Newton-Schulz iteration:**
-This is the core mechanism. Given a matrix \(X\) whose singular values lie in \((0, 1)\), repeated application of the Newton-Schulz formula drives all singular values toward 1, making the matrix approximately orthogonal. The iteration converges quadratically.
+This is the core mechanism. Given a matrix $X$ whose singular values lie in $(0, 1)$, repeated application of the Newton-Schulz formula drives all singular values toward 1, making the matrix approximately orthogonal. The iteration converges quadratically.
 
 **Practical usage:**
 Muon has been validated in training runs such as modded-nanoGPT, where it achieved state-of-the-art training efficiency for GPT-2 scale models. The optimizer is typically paired with a learning rate scheduler and used alongside AdamW for non-matrix parameters.
@@ -313,7 +313,7 @@ $$
 \frac{\partial J}{\partial \theta} \approx \frac{J(\theta + \epsilon) - J(\theta - \epsilon)}{2\epsilon}
 $$
 
-Where \\(\epsilon \approx 10^{-7}\\).
+Where $\epsilon \approx 10^{-7}$.
 
 ### 7.2 Loss Function Curve Analysis
 
@@ -330,7 +330,7 @@ Start training with a very small learning rate, gradually increase it, observe l
 
 Gradient descent is the cornerstone algorithm of machine learning. Understanding its principles and variants is crucial for building efficient models. Key takeaways:
 
-- **Core formula:** \\(\theta := \theta - \alpha \nabla J(\theta)\\)
+- **Core formula:** $\theta := \theta - \alpha \nabla J(\theta)$
 - Learning rate is the most critical hyperparameter and requires careful tuning
 - Mini-batch is the standard choice in practice
 - Feature scaling can significantly accelerate convergence
