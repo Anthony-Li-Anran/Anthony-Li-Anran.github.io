@@ -23,9 +23,9 @@ Imagine you are at the top of a mountain and want to walk to the lowest point in
 
 The parameter update formula for gradient descent is:
 
-$$
+\[
 \theta_{t+1} = \theta_t - \alpha \nabla J(\theta_t)
-$$
+\]
 
 Where:
 - $\theta_t$: Parameter vector at iteration $t$
@@ -37,9 +37,9 @@ Where:
 
 For a univariate function $f(x)$, the update formula simplifies to:
 
-$$
+\[
 x_{t+1} = x_t - \alpha \cdot f'(x_t)
-$$
+\]
 
 **Example:** Minimizing $f(x) = x^2$
 
@@ -50,20 +50,20 @@ $$
 
 For a multivariate function $J(\theta_1, \theta_2, ..., \theta_n)$, the gradient is a vector composed of partial derivatives:
 
-$$
+\[
 \nabla J = \begin{bmatrix}
 \frac{\partial J}{\partial \theta_1} \\
 \frac{\partial J}{\partial \theta_2} \\
 \vdots \\
 \frac{\partial J}{\partial \theta_n}
 \end{bmatrix}
-$$
+\]
 
 Parameter update (vectorized form):
 
-$$
+\[
 \theta := \theta - \alpha \nabla J(\theta)
-$$
+\]
 
 ![Gradient Vector Visualization](/images/2026_3_6-figure2.png)
 
@@ -88,9 +88,9 @@ The learning rate $\alpha$ is the most important hyperparameter in gradient desc
 
 **Decaying Learning Rate:** Decreases over time
 
-$$
+\[
 \alpha_t = \frac{\alpha_0}{1 + \gamma t}
-$$
+\]
 
 **Adaptive Learning Rate:** Algorithms like AdaGrad, RMSprop, and Adam automatically adjust
 
@@ -102,9 +102,9 @@ $$
 
 **Formula:**
 
-$$
+\[
 \nabla J(\theta) = \frac{1}{m} \sum_{i=1}^{m} \nabla J_i(\theta)
-$$
+\]
 
 **Characteristics:**
 - ✅ Accurate gradient estimation, stable convergence
@@ -118,9 +118,9 @@ $$
 
 **Formula:**
 
-$$
+\[
 \theta := \theta - \alpha \nabla J_i(\theta)
-$$
+\]
 
 **Characteristics:**
 - ✅ Fast computation, suitable for online learning
@@ -134,9 +134,9 @@ $$
 
 **Formula:**
 
-$$
+\[
 \nabla J(\theta) = \frac{1}{b} \sum_{i=1}^{b} \nabla J_i(\theta)
-$$
+\]
 
 Where $b$ is the batch size.
 
@@ -168,9 +168,9 @@ In high-dimensional spaces, saddle points are more common than local minima. At 
 
 **Mathematical form (2D example):**
 
-$$
+\[
 f(x, y) = x^2 - y^2
-$$
+\]
 
 At the origin $(0, 0)$:
 - $\nabla f = (0, 0)$
@@ -191,15 +191,15 @@ When feature scales differ significantly, the loss function contours become elli
 
 **Min-Max Normalization:**
 
-$$
+\[
 x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}
-$$
+\]
 
 **Standardization (Z-score):**
 
-$$
+\[
 x_{std} = \frac{x - \mu}{\sigma}
-$$
+\]
 
 **Effects:**
 - Contours become circular
@@ -214,13 +214,13 @@ $$
 
 Introduces velocity variable $v$ to accumulate historical gradients:
 
-$$
+\[
 v_t = \beta v_{t-1} + \alpha \nabla J(\theta_t)
-$$
+\]
 
-$$
+\[
 \theta_{t+1} = \theta_t - v_t
-$$
+\]
 
 Where $\beta \in [0, 1]$ is the momentum coefficient (typically 0.9).
 
@@ -230,9 +230,9 @@ Where $\beta \in [0, 1]$ is the momentum coefficient (typically 0.9).
 
 Adjusts learning rate separately for each parameter:
 
-$$
+\[
 \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{G_t + \epsilon}} \odot \nabla J(\theta_t)
-$$
+\]
 
 Where $G_t$ is the cumulative sum of squared historical gradients.
 
@@ -242,33 +242,33 @@ Where $G_t$ is the cumulative sum of squared historical gradients.
 
 Improves AdaGrad's monotonically decreasing learning rate issue:
 
-$$
+\[
 E[g^2]_t = \beta E[g^2]_{t-1} + (1 - \beta)g_t^2
-$$
+\]
 
-$$
+\[
 \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{E[g^2]_t + \epsilon}} g_t
-$$
+\]
 
 ### 6.4 Adam (Adaptive Moment Estimation)
 
 Combines the advantages of Momentum and RMSprop:
 
-$$
+\[
 m_t = \beta_1 m_{t-1} + (1 - \beta_1)g_t
-$$
+\]
 
-$$
+\[
 v_t = \beta_2 v_{t-1} + (1 - \beta_2)g_t^2
-$$
+\]
 
-$$
+\[
 \hat{m}_t = \frac{m_t}{1 - \beta_1^t}, \quad \hat{v}_t = \frac{v_t}{1 - \beta_2^t}
-$$
+\]
 
-$$
+\[
 \theta_{t+1} = \theta_t - \frac{\alpha}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t
-$$
+\]
 
 Default parameters: $\beta_1 = 0.9$, $\beta_2 = 0.999$, $\epsilon = 10^{-8}$
 
@@ -309,9 +309,9 @@ Muon has been validated in training runs such as modded-nanoGPT, where it achiev
 
 Validate analytical gradients using numerical gradients:
 
-$$
+\[
 \frac{\partial J}{\partial \theta} \approx \frac{J(\theta + \epsilon) - J(\theta - \epsilon)}{2\epsilon}
-$$
+\]
 
 Where $\epsilon \approx 10^{-7}$.
 
