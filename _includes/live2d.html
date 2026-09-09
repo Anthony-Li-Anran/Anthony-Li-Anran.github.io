@@ -1,13 +1,34 @@
 {% if site.live2d.enabled and page.live2d != false %}
 <link rel="stylesheet" href="{{ '/assets/css/live2d.css' | relative_url }}">
 <aside id="live2d-companion" lang="zh-CN" aria-label="Live2D 看板娘"
-       data-model="{{ site.live2d.model | relative_url | escape }}" hidden>
+       data-model="{{ site.live2d.model | relative_url | escape }}"
+       data-core="{{ '/assets/live2d/runtime/live2dcubismcore.min.js' | relative_url }}" hidden>
   <div id="live2d-panel" hidden>
     <p id="live2d-message" role="status" hidden></p>
     <canvas id="live2d-canvas" width="220" height="300" aria-hidden="true"></canvas>
     <div class="live2d-actions">
       <button id="live2d-greet" type="button">打个招呼</button>
+      <button id="live2d-more" type="button" aria-controls="live2d-options" aria-expanded="false">互动</button>
       <button id="live2d-hide" type="button" aria-label="隐藏看板娘">隐藏</button>
+    </div>
+    <div id="live2d-options" hidden>
+      <label for="live2d-expression">表情</label>
+      <select id="live2d-expression">
+        <option value="0">自然</option>
+        <option value="10">嘻嘻</option>
+        <option value="6">疑问</option>
+        <option value="9">呆愣</option>
+        <option value="8">流汗</option>
+        <option value="3">难受</option>
+        <option value="4">鄙夷</option>
+        <option value="5">生气</option>
+        <option value="7">哭泣</option>
+      </select>
+      <div class="live2d-actions">
+        <button id="live2d-glasses" type="button" aria-pressed="false">墨镜</button>
+        <button id="live2d-ears" type="button" aria-pressed="false">猫耳</button>
+      </div>
+      <small>表情会在 6 秒后恢复。点击刘海或右侧后发也能切换配件。</small>
     </div>
   </div>
   <button id="live2d-show" type="button" aria-controls="live2d-panel"

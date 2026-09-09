@@ -97,8 +97,8 @@ publication_category:
 # Site Settings
 live2d:
   enabled: true
-  # Cubism 2 model JSON; relative paths are resolved against the site's baseurl.
-  model: "https://cdn.jsdelivr.net/npm/live2d-widget-model-shizuku@1.0.5/assets/shizuku.model.json"
+  # Cubism 4 model JSON; relative paths are resolved against the site's baseurl.
+  model: "/assets/live2d/firefly/firefly.model3.json"
 
 teaser                   :  # filename of teaser fallback teaser image placed in /images/ for social media previews
 breadcrumbs              : true # true, false (default)

@@ -24,7 +24,7 @@
 
 #live2d-message {
   position: absolute;
-  bottom: 250px;
+  bottom: 176px;
   left: 0;
   width: 100%;
   box-sizing: border-box;
@@ -65,6 +65,26 @@
 #live2d-show {
   float: right;
 }
+
+#live2d-options {
+  pointer-events: auto;
+  position: absolute;
+  right: calc(100% + 12px);
+  bottom: 42px;
+  width: 220px;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid var(--global-border-color, #0092ca);
+  border-radius: 14px;
+  background: var(--global-bg-color, #eee);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+
+#live2d-options label { display: inline; margin-right: 8px; }
+#live2d-options select { width: 130px; padding: 5px; color: inherit; background: inherit; }
+#live2d-options .live2d-actions { justify-content: flex-start; margin: 10px 0; }
+#live2d-options small { display: block; font-size: 11px; }
+#live2d-companion button[aria-pressed="true"] { outline: 2px solid var(--global-base-color, #0092ca); }
 
 @media (max-width: 1023px), print {
   #live2d-companion {

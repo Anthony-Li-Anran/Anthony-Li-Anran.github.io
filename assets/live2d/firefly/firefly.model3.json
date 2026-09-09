@@ -1,0 +1,101 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "Moc_0.moc3",
+    "Textures": [
+      "Textures_0_0.png"
+    ],
+    "Physics": "Physics_0.json",
+    "Expressions": [
+      {
+        "Name": "expression00.exp3",
+        "File": "Expressions_0_File_0.json"
+      },
+      {
+        "Name": "expression1.exp3",
+        "File": "Expressions_1_File_0.json"
+      },
+      {
+        "Name": "expression2.exp3",
+        "File": "Expressions_2_File_0.json"
+      },
+      {
+        "Name": "expression3.exp3",
+        "File": "Expressions_3_File_0.json"
+      },
+      {
+        "Name": "expression4.exp3",
+        "File": "Expressions_4_File_0.json"
+      },
+      {
+        "Name": "expression5.exp3",
+        "File": "Expressions_5_File_0.json"
+      },
+      {
+        "Name": "expression6.exp3",
+        "File": "Expressions_6_File_0.json"
+      },
+      {
+        "Name": "expression7.exp3",
+        "File": "Expressions_7_File_0.json"
+      },
+      {
+        "Name": "expression8.exp3",
+        "File": "Expressions_8_File_0.json"
+      },
+      {
+        "Name": "expression9.exp3",
+        "File": "Expressions_9_File_0.json"
+      },
+      {
+        "Name": "expression10.exp3",
+        "File": "Expressions_10_File_0.json"
+      }
+    ],
+    "Motions": {
+      "Tap": [
+        {
+          "File": "Motions_Tick2_0_File_0.json"
+        },
+        {
+          "File": "Motions_Tick2_1_File_0.json"
+        },
+        {
+          "File": "Motions_Tick2_2_File_0.json"
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    }
+  ],
+  "HitAreas": [
+    {
+      "Id": "ArtMesh153",
+      "Name": "饮料"
+    },
+    {
+      "Id": "ArtMesh154",
+      "Name": "蛋糕"
+    },
+    {
+      "Id": "ArtMesh23",
+      "Name": "刘海"
+    },
+    {
+      "Id": "ArtMesh147",
+      "Name": "左侧后发"
+    },
+    {
+      "Id": "ArtMesh150",
+      "Name": "右侧后发"
+    }
+  ]
+}
