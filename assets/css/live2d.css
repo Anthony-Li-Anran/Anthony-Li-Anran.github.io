@@ -1,0 +1,73 @@
+#live2d-companion {
+  position: fixed;
+  right: 18px;
+  bottom: 12px;
+  width: 220px;
+  z-index: 20;
+  pointer-events: none;
+  font: 13px/1.6 system-ui, sans-serif;
+  color: var(--global-text-color, #222831);
+}
+
+#live2d-companion [hidden],
+#live2d-companion[hidden] {
+  display: none !important;
+}
+
+#live2d-canvas {
+  display: block;
+  width: 220px;
+  height: 300px;
+  /* Keep text and links underneath the transparent canvas clickable. */
+  pointer-events: none;
+}
+
+#live2d-message {
+  position: absolute;
+  bottom: 250px;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0 0 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--global-border-color, #0092ca);
+  border-radius: 14px 14px 4px 14px;
+  background: var(--global-bg-color, #eee);
+  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
+}
+
+.live2d-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+#live2d-companion button {
+  pointer-events: auto;
+  cursor: pointer;
+  min-height: 34px;
+  margin: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--global-border-color, #0092ca);
+  border-radius: 18px;
+  background: var(--global-bg-color, #eee);
+  color: inherit;
+  font: inherit;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+}
+
+#live2d-companion button:hover,
+#live2d-companion button:focus-visible {
+  outline: 2px solid var(--global-base-color, #0092ca);
+  outline-offset: 3px;
+}
+
+#live2d-show {
+  float: right;
+}
+
+@media (max-width: 1023px), print {
+  #live2d-companion {
+    display: none !important;
+  }
+}

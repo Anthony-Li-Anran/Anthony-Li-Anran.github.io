@@ -1,0 +1,17 @@
+{% if site.live2d.enabled and page.live2d != false %}
+<link rel="stylesheet" href="{{ '/assets/css/live2d.css' | relative_url }}">
+<aside id="live2d-companion" lang="zh-CN" aria-label="Live2D 看板娘"
+       data-model="{{ site.live2d.model | relative_url | escape }}" hidden>
+  <div id="live2d-panel" hidden>
+    <p id="live2d-message" role="status" hidden></p>
+    <canvas id="live2d-canvas" width="220" height="300" aria-hidden="true"></canvas>
+    <div class="live2d-actions">
+      <button id="live2d-greet" type="button">打个招呼</button>
+      <button id="live2d-hide" type="button" aria-label="隐藏看板娘">隐藏</button>
+    </div>
+  </div>
+  <button id="live2d-show" type="button" aria-controls="live2d-panel"
+          aria-expanded="false" hidden>显示看板娘</button>
+</aside>
+<script defer src="{{ '/assets/js/live2d.js' | relative_url }}"></script>
+{% endif %}
