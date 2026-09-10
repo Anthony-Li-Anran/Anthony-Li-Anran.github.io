@@ -27,21 +27,4 @@ window.MathJax = {
     await mermaid.run({querySelector:'code.language-mermaid'});
 </script>
 
-<!-- Language switch placeholder - shows coming soon message -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const langToggle = document.getElementById('lang-toggle');
-    
-    if (langToggle) {
-        const langToggleLink = langToggle.querySelector('a');
-        if (langToggleLink) {
-            langToggleLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                alert('Language switching feature is under development');
-            });
-        }
-    }
-});
-</script>
-
 <!-- end custom footer snippets -->
