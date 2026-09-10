@@ -13,16 +13,16 @@ redirect_from:
 
 2024111713@stu.sufe.edu.cn · 18213009360 · Shanghai · [https://anthony-li-anran.github.io/](https://anthony-li-anran.github.io/)
 
-## Summary
+<h2 data-i18n="cv.summary">Summary</h2>
 
 Data Science undergraduate at Shanghai University of Finance and Economics, focused on LLM agent applications and financial research automation. Hands-on experience across the full multi-agent system lifecycle — design, development, and evaluation. Proficient in Python and C++, skilled with AI-assisted development tools including Dify, Codex, and Claude Code. Strong foundation in statistical modeling and financial time series analysis, with an emphasis on reproducibility and end-to-end delivery.
 
-## Personal
+<h2 data-i18n="cv.personal">Personal</h2>
 
 - **GitHub** — Anthony-Li-Anran ([https://github.com/Anthony-Li-Anran](https://github.com/Anthony-Li-Anran))
 - **LinkedIn** — anthony-li-anran ([https://www.linkedin.com/in/anthony-li-anran/](https://www.linkedin.com/in/anthony-li-anran/))
 
-## Education
+<h2 data-i18n="cv.education">Education</h2>
 
 ### Shanghai University of Finance and Economics · School of Statistics and Data Science — B.S., Data Science (2024.09 – 2028.06)
 
@@ -31,7 +31,7 @@ _Shanghai · GPA: 3.4_
 English CET-6: 537 · CET-4: 598
 Self-study: Stanford CS229 _Machine Learning_ · _Build a Large Language Model from Scratch_
 
-## Experience
+<h2 data-i18n="cv.work_experience">Experience</h2>
 
 ### Shanghai Chuangzhi Institute — Data Agent Engineer Intern (2026.07 – 2026.10)
 
@@ -40,7 +40,7 @@ _Shanghai_
 **Overview**: Responsible for the **AI Eval** benchmarking framework design for the "Data Brain" Data Agent and delivery of the "Chuangzhi Find People" Agent.
 **Contributions**: Diagnosed data retrieval pipeline failures via **trace-level link tracking**, and built **evaluation data recycling** and **model continuous improvement** mechanisms. Abstracted high-frequency query patterns into reusable **Skills** to improve retrieval efficiency and accuracy. Upgraded Agent permission control from prompt-level constraints to **code-level enforcement**. Developed Agents and orchestrated tool-calling workflows on **Dify**, deployed via **Docker**, closing the loop from requirements analysis to production.
 
-## Projects
+<h2 data-i18n="cv.projects">Projects</h2>
 
 ### AutoSTAT — Multi-Agent Automated Statistical Analysis System (2025.08 – 2025.10)
 
@@ -56,7 +56,7 @@ _Shanghai_
 
 [GitHub](https://github.com/Anthony-Li-Anran/Thesis-Studio)
 
-## Research
+<h2 data-i18n="cv.research">Research</h2>
 
 ### Bootstrap Localized Conformal Prediction: Decoupling Response Noise from Sample-Induced Uncertainty (2025.07 – Present · Targeting UAI 2027)
 

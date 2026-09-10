@@ -12,6 +12,6 @@ redirect_from:
 {% include cv-template.html %}
 
 <div class="cv-download-links">
-  <a href="{{ base_path }}/files/cv.pdf" class="btn btn--primary">Download CV as PDF</a>
-  <a href="{{ base_path }}" class="btn btn--inverse">View Markdown CV</a>
+  <a href="{{ base_path }}/files/cv.pdf" class="btn btn--primary"><span data-i18n="cv.download_pdf">Download CV as PDF</span></a>
+  <a href="{{ base_path }}" class="btn btn--inverse"><span data-i18n="cv.view_markdown">View Markdown CV</span></a>
 </div>

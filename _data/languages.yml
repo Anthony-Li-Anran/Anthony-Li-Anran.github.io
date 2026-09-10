@@ -82,6 +82,28 @@ en:
     email_work: Email (work)
     wechat_label: WeChat
     qq_label: QQ
+  cv:
+    summary: Summary
+    education: Education
+    work_experience: Work Experience
+    skills: Skills
+    publications: Publications
+    presentations: Presentations
+    teaching: Teaching
+    portfolio: Portfolio
+    cv_languages: Languages
+    cv_interests: Interests
+    references: References
+    gpa: "GPA:"
+    courses: "Courses:"
+    role: "Role:"
+    view_publication: View Publication
+    view_project: View Project
+    download_pdf: Download CV as PDF
+    view_markdown: View Markdown CV
+    personal: Personal
+    projects: Projects
+    research: Research
 zh:
   nav:
     home: 首页
@@ -143,3 +165,25 @@ zh:
     email_work: 邮箱 (工作)
     wechat_label: 微信
     qq_label: QQ
+  cv:
+    summary: 摘要
+    education: 教育背景
+    work_experience: 工作经历
+    skills: 技能
+    publications: 出版物
+    presentations: 演讲报告
+    teaching: 教学经历
+    portfolio: 作品集
+    cv_languages: 语言能力
+    cv_interests: 兴趣
+    references: 推荐信
+    gpa: "GPA："
+    courses: "课程："
+    role: "角色："
+    view_publication: 查看出版物
+    view_project: 查看项目
+    download_pdf: 下载PDF简历
+    view_markdown: 查看Markdown简历
+    personal: 个人信息
+    projects: 项目经历
+    research: 研究经历

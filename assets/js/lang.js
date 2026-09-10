@@ -41,7 +41,7 @@ var I18N = (function() {
   function _updateToggleUI() {
     var icon = document.getElementById('lang-icon');
     if (icon) {
-      icon.textContent = _currentLang === 'zh' ? 'En' : '\u4e2d';
+      icon.textContent = _currentLang === 'zh' ? 'En/中' : '中/En';
     }
   }
 
