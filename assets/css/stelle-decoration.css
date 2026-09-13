@@ -13,7 +13,8 @@
     display: block;
     width: min(100%, 108px);
     height: 111px;
-    margin: 12px auto 16px;
+    /* Match the left-aligned profile avatar's 175px column, not the wider sidebar. */
+    margin: 12px 0 16px max(0px, calc((min(100%, 175px) - 108px) / 2));
     overflow: hidden;
   }
 }
