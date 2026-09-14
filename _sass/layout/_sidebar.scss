@@ -60,6 +60,15 @@
   }
 }
 
+// Keep the personal profile fixed independently of the companion.
+@media screen and (min-width: 1024px) {
+  .sidebar.sticky {
+    position: fixed;
+    height: auto;
+    overflow: visible;
+  }
+}
+
 .sidebar__right {
   margin-bottom: 1em;
 

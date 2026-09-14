@@ -1,0 +1,61 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "Stelle.moc3",
+    "Textures": [
+      "textures/m00.png",
+      "textures/m01.png",
+      "textures/m02.png",
+      "textures/m03.png",
+      "textures/m05.png",
+      "textures/m06.png",
+      "textures/m07.png",
+      "textures/m08.png",
+      "textures/m09.png",
+      "textures/m10.png",
+      "textures/m11.png",
+      "textures/m12.png",
+      "textures/m13.png",
+      "textures/m14.png",
+      "textures/m15.png",
+      "textures/m20.png"
+    ],
+    "DisplayInfo": "Stelle.cdi3.json",
+    "Motions": {
+      "Idle": [
+        {
+          "File": "motions/Idle.motion3.json",
+          "FadeInTime": 0.5,
+          "FadeOutTime": 0.5
+        }
+      ]
+    },
+    "Expressions": [
+      {
+        "Name": "Smile",
+        "File": "expressions/Smile.exp3.json"
+      },
+      {
+        "Name": "Wink",
+        "File": "expressions/Wink.exp3.json"
+      }
+    ]
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}
