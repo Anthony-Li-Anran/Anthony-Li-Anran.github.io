@@ -1,5 +1,5 @@
-{% if site.live2d.enabled and page.live2d != false %}
-<link rel="stylesheet" href="{{ '/assets/css/live2d.css' | relative_url }}">
+{% if site.live2d.enabled and site.live2d.model != empty and page.live2d != false %}
+<link rel="stylesheet" href="{{ '/assets/css/live2d.css' | relative_url }}?v={{ site.time | date: '%s' }}">
 <aside id="live2d-companion" lang="zh-CN" aria-label="星 · Live2D 看板娘"
        data-model="{{ site.live2d.model | relative_url | escape }}"
        data-runtime="{{ '/assets/live2d/runtime/' | relative_url }}" hidden>
@@ -10,11 +10,16 @@
     </div>
     <div class="live2d-actions">
       <button id="live2d-greet" type="button">打个招呼</button>
+      <button id="live2d-expressions-toggle" type="button" aria-controls="live2d-expressions" aria-expanded="false">表情</button>
       <button id="live2d-hide" type="button" aria-label="隐藏看板娘">隐藏</button>
+    </div>
+    <div id="live2d-expressions" hidden>
+      <label for="live2d-expression">看看星的表情</label>
+      <select id="live2d-expression" aria-label="星的表情" disabled><option value="Neutral">自然</option></select>
     </div>
   </div>
   <button id="live2d-show" type="button" aria-controls="live2d-panel"
           aria-expanded="false" hidden>显示看板娘</button>
 </aside>
-<script defer src="{{ '/assets/js/live2d.js' | relative_url }}"></script>
+<script defer src="{{ '/assets/js/live2d.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 {% endif %}

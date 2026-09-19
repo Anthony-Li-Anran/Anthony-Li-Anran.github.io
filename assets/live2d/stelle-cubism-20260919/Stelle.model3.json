@@ -1,0 +1,150 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "Stelle.moc3",
+    "Textures": [
+      "Stelle.1024/texture_00.png",
+      "Stelle.1024/texture_01.png",
+      "Stelle.1024/texture_02.png",
+      "Stelle.1024/texture_03.png",
+      "Stelle.1024/texture_04.png",
+      "Stelle.1024/texture_05.png",
+      "Stelle.1024/texture_06.png",
+      "Stelle.1024/texture_07.png",
+      "Stelle.1024/texture_08.png",
+      "Stelle.1024/texture_09.png",
+      "Stelle.1024/texture_10.png",
+      "Stelle.1024/texture_11.png",
+      "Stelle.1024/texture_12.png",
+      "Stelle.1024/texture_13.png",
+      "Stelle.1024/texture_14.png",
+      "Stelle.1024/texture_15.png",
+      "Stelle.1024/texture_16.png",
+      "Stelle.1024/texture_17.png",
+      "Stelle.1024/texture_18.png",
+      "Stelle.1024/texture_19.png",
+      "Stelle.1024/texture_20.png",
+      "Stelle.1024/texture_21.png",
+      "Stelle.1024/texture_22.png",
+      "Stelle.1024/texture_23.png",
+      "Stelle.1024/texture_24.png",
+      "Stelle.1024/texture_25.png",
+      "Stelle.1024/texture_26.png",
+      "Stelle.1024/texture_27.png",
+      "Stelle.1024/texture_28.png",
+      "Stelle.1024/texture_29.png",
+      "Stelle.1024/texture_30.png"
+    ],
+    "Physics": "Stelle.physics3.json",
+    "DisplayInfo": "Stelle.cdi3.json",
+    "Expressions": [
+      {
+        "Name": "Neutral",
+        "File": "expressions/Neutral.exp3.json"
+      },
+      {
+        "Name": "Smile",
+        "File": "expressions/Smile.exp3.json"
+      },
+      {
+        "Name": "Happy",
+        "File": "expressions/Happy.exp3.json"
+      },
+      {
+        "Name": "Shy",
+        "File": "expressions/Shy.exp3.json"
+      },
+      {
+        "Name": "Sad",
+        "File": "expressions/Sad.exp3.json"
+      },
+      {
+        "Name": "Cry",
+        "File": "expressions/Cry.exp3.json"
+      },
+      {
+        "Name": "Angry",
+        "File": "expressions/Angry.exp3.json"
+      },
+      {
+        "Name": "Surprised",
+        "File": "expressions/Surprised.exp3.json"
+      },
+      {
+        "Name": "Thinking",
+        "File": "expressions/Thinking.exp3.json"
+      },
+      {
+        "Name": "Wink",
+        "File": "expressions/Wink.exp3.json"
+      },
+      {
+        "Name": "SoftEyes",
+        "File": "expressions/SoftEyes.exp3.json"
+      },
+      {
+        "Name": "StarEyes",
+        "File": "expressions/StarEyes.exp3.json"
+      },
+      {
+        "Name": "HeartEyes",
+        "File": "expressions/HeartEyes.exp3.json"
+      },
+      {
+        "Name": "Question",
+        "File": "expressions/Question.exp3.json"
+      },
+      {
+        "Name": "Awkward",
+        "File": "expressions/Awkward.exp3.json"
+      }
+    ],
+    "Motions": {
+      "Idle": [
+        {
+          "File": "motions/Idle.motion3.json",
+          "FadeInTime": 0.5,
+          "FadeOutTime": 0.5
+        }
+      ],
+      "Nod": [
+        {
+          "File": "motions/Nod.motion3.json",
+          "FadeInTime": 0.35,
+          "FadeOutTime": 0.4
+        }
+      ],
+      "LookAround": [
+        {
+          "File": "motions/LookAround.motion3.json",
+          "FadeInTime": 0.35,
+          "FadeOutTime": 0.4
+        }
+      ],
+      "Tilt": [
+        {
+          "File": "motions/Tilt.motion3.json",
+          "FadeInTime": 0.35,
+          "FadeOutTime": 0.4
+        }
+      ]
+    }
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    },
+    {
+      "Target": "Parameter",
+      "Name": "LipSync",
+      "Ids": [
+        "ParamMouthOpenY"
+      ]
+    }
+  ]
+}

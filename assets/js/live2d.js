@@ -1,4 +1,4 @@
-/* Stelle v4: approved chest crop, toon materials and native Cubism parameters. */
+/* Official-editor export, with a single parameter/physics update per frame. */
 (() => {
   'use strict';
   const companion = document.getElementById('live2d-companion');
@@ -10,13 +10,19 @@
   const show = document.getElementById('live2d-show');
   const hide = document.getElementById('live2d-hide');
   const greet = document.getElementById('live2d-greet');
+  const expressionMenu = document.getElementById('live2d-expressions');
+  const expressionToggle = document.getElementById('live2d-expressions-toggle');
+  const expressionSelect = document.getElementById('live2d-expression');
   const desktop = matchMedia('(min-width: 1024px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const storageKey = 'anthony-live2d-hidden';
   const scripts = new Map();
-  let app, model, loading = false, active = false;
+  let app, model, physics, loading = false, active = false;
+  const hairParameters = ['ParamHairFront', 'ParamHairSide', 'ParamHairSideR', 'ParamHairBack', 'ParamHairFluffy'];
   let dismissed = reduced.matches;
-  let last = 0, blinkStart = -100, smileUntil = 0, messageTimer;
+  let last = 0, blinkStart = -100, messageTimer;
+  let expressionData, expressionUntil = 0;
+  let expressionTarget = {}, expressionCurrent = {};
   let target = { x: 0, y: 0 }, pointer = { x: 0, y: 0 };
   try {
     const saved = localStorage.getItem(storageKey);
@@ -27,11 +33,18 @@
     try { localStorage.setItem(storageKey, String(dismissed)); } catch (_) { /* Optional. */ }
   }
 
-  function say(text) {
+  function say(text, duration) {
     clearTimeout(messageTimer);
     message.textContent = text;
     message.hidden = false;
-    messageTimer = setTimeout(() => { message.hidden = true; }, 4000);
+    messageTimer = setTimeout(() => { message.hidden = true; }, duration || 4000);
+  }
+
+  function setExpression(name, duration = 6000) {
+    if (!expressionData || !expressionData.presets[name]) return;
+    expressionTarget = { ...expressionData.defaults, ...expressionData.presets[name].values };
+    expressionUntil = duration ? performance.now() + duration : Infinity;
+    expressionSelect.value = name;
   }
 
   function fit() {
@@ -91,28 +104,37 @@
   }
 
   function updateParameters() {
-    const t = performance.now() / 1000, dt = Math.min(.1, t - last);
+    const t = performance.now() / 1000, dt = Math.max(0, Math.min(.05, t - last));
     last = t;
     const lerp = 1 - Math.exp(-dt * 12);
     pointer.x += (target.x - pointer.x) * lerp;
     pointer.y += (target.y - pointer.y) * lerp;
+    if (performance.now() > expressionUntil && expressionSelect.value !== 'Neutral') setExpression('Neutral', 0);
+    for (const [id,value] of Object.entries(expressionTarget)) {
+      const current = expressionCurrent[id] ?? value;
+      expressionCurrent[id] = reduced.matches ? value : current + (value-current) * lerp;
+      if (Math.abs(expressionCurrent[id]-value)<.001) expressionCurrent[id]=value;
+    }
     const eye = Math.min(blink(t - blinkStart), reduced.matches ? 1 : blink(t % 5.2 - 2));
     const values = {
-      ParamEyeLOpen: eye, ParamEyeROpen: eye,
-      ParamAngleX: reduced.matches ? 0 : pointer.x * 10,
-      ParamAngleY: reduced.matches ? 0 : -pointer.y * 8,
+      ...expressionCurrent,
+      ParamEyeLOpen: (expressionCurrent.ParamEyeLOpen ?? 1) * eye,
+      ParamEyeROpen: (expressionCurrent.ParamEyeROpen ?? 1) * eye,
+      ParamAngleX: reduced.matches ? 0 : pointer.x * 25,
+      ParamAngleY: reduced.matches ? 0 : pointer.y * 23,
       ParamAngleZ: reduced.matches ? 0 : -pointer.x * 2.8 + Math.sin(t * .7) * .8,
       ParamEyeBallX: reduced.matches ? 0 : pointer.x,
       ParamEyeBallY: reduced.matches ? 0 : pointer.y,
       ParamBreath: reduced.matches ? 0 : (Math.sin(t * 1.5) + 1) / 2,
       ParamBodyAngleZ: reduced.matches ? 0 : -pointer.x * 1.2 + Math.sin(t * .65) * .4,
-      ParamHairFront: reduced.matches ? 0 : Math.sin(t * 1.1) * .35,
-      ParamMouthOpenY: 0, ParamMouthForm: t < smileUntil ? .7 : 0,
-      ParamBrowLY: t < smileUntil ? .2 : 0
+      ParamMouthOpenY: expressionCurrent.ParamMouthOpenY || 0
     };
-    for (const [id, value] of Object.entries(values)) {
-      model.internalModel.coreModel.setParameterValueById(id, value);
-    }
+    const core = model.internalModel.coreModel;
+    for (const [id, value] of Object.entries(values)) core.setParameterValueById(id, value);
+    // The preview and website use the same order: input -> native physics -> mesh.
+    if (reduced.matches) {
+      for (const id of hairParameters) core.setParameterValueById(id, 0);
+    } else if (physics) physics.evaluate(core, dt);
   }
 
   async function start() {
@@ -136,6 +158,18 @@
       model = await window.PIXI.live2d.Live2DModel.from(companion.dataset.model, {
         autoUpdate: false, autoInteract: false, autoHitTest: false, autoFocus: false
       });
+      physics = model.internalModel.physics;
+      model.internalModel.physics = undefined;
+      const expressionUrl = new URL('expressions.json', new URL(companion.dataset.model, location.href));
+      const expressionResponse = await fetch(expressionUrl);
+      if (!expressionResponse.ok) throw new Error('Unable to load expression definitions');
+      expressionData = await expressionResponse.json();
+      expressionCurrent = { ...expressionData.defaults };
+      expressionSelect.replaceChildren(...Object.entries(expressionData.presets).map(([name,preset]) => {
+        const option = document.createElement('option'); option.value = name; option.textContent = preset.label; return option;
+      }));
+      expressionSelect.disabled = false;
+      setExpression('Neutral', 0);
       model.anchor.set(0, 0);
       app.stage.addChild(model);
       model.internalModel.on('beforeModelUpdate', updateParameters);
@@ -146,7 +180,7 @@
       show.textContent = '显示看板娘';
     } catch (error) {
       if (app) app.destroy(false, { children: true });
-      app = model = undefined;
+      app = model = physics = undefined;
       companion.dataset.state = 'error';
       show.textContent = '重试看板娘';
       show.title = '加载失败，点击重试';
@@ -163,6 +197,8 @@
     remember();
     clearTimeout(messageTimer);
     message.hidden = true;
+    expressionMenu.hidden = true;
+    expressionToggle.setAttribute('aria-expanded','false');
     syncVisibility();
     show.focus();
   });
@@ -176,8 +212,16 @@
   });
   greet.addEventListener('click', () => {
     blinkStart = performance.now() / 1000;
-    smileUntil = blinkStart + 1.8;
-    say('旅途还在继续。今天也一起开拓吧！');
+    setExpression('Smile');
+    say('Anthony，今天从哪里开始开拓？我已经就位了。');
+  });
+  expressionToggle.addEventListener('click', () => {
+    expressionMenu.hidden = !expressionMenu.hidden;
+    expressionToggle.setAttribute('aria-expanded', String(!expressionMenu.hidden));
+  });
+  expressionSelect.addEventListener('change', () => setExpression(expressionSelect.value, 8000));
+  companion.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { expressionMenu.hidden = true; expressionToggle.setAttribute('aria-expanded','false'); expressionToggle.focus(); }
   });
 
   function trackAxis(position, origin, extent) {

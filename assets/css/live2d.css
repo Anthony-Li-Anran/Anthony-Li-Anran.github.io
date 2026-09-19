@@ -69,6 +69,19 @@
 
 #live2d-show { float: right; }
 
+#live2d-expressions {
+  pointer-events: auto;
+  margin-top: 6px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid var(--global-border-color, #0092ca);
+  background: var(--global-bg-color, #eee);
+}
+#live2d-expressions label { font: inherit; margin-right: 8px; }
+#live2d-expression { width: auto; display: inline-block; margin: 0; padding: 4px; font: inherit; color: inherit; background: inherit; }
+#live2d-message { max-height: 200px; overflow-y: auto; pointer-events: auto; overflow-wrap: anywhere; }
+#live2d-companion button:disabled { cursor: wait; opacity: .65; }
+
 @media (min-width: 1500px) {
   #live2d-companion { width: 350px; right: 40px; }
   #live2d-portrait { height: 247px; }

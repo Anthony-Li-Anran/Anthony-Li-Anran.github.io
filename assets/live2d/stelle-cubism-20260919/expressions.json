@@ -1,0 +1,164 @@
+{
+  "defaults": {
+    "ParamEyeLOpen": 1,
+    "ParamEyeLSmile": 0,
+    "ParamBrowLY": 0,
+    "ParamBrowLX": 0,
+    "ParamBrowLAngle": 0,
+    "ParamBrowLForm": 0,
+    "ParamEyeROpen": 1,
+    "ParamEyeRSmile": 0,
+    "ParamBrowRY": 0,
+    "ParamBrowRX": 0,
+    "ParamBrowRAngle": 0,
+    "ParamBrowRForm": 0,
+    "ParamEyeBallForm": 0,
+    "ParamEyeNarrow": 0,
+    "ParamMouthOpenY": 0,
+    "ParamMouthForm": 0,
+    "ParamMouthI": 0,
+    "ParamMouthU": 0,
+    "ParamMouthE": 0,
+    "ParamMouthO": 0,
+    "ParamMouthPress": 0,
+    "ParamCheek": 0,
+    "ParamTear": 0,
+    "ParamEyeHighlight": 0,
+    "ParamEyeHeart": 0,
+    "ParamBlushLines": 0,
+    "ParamAnger": 0,
+    "ParamSweat": 0,
+    "ParamQuestion": 0,
+    "ParamSurpriseMark": 0
+  },
+  "presets": {
+    "Neutral": {
+      "label": "自然",
+      "values": {}
+    },
+    "Smile": {
+      "label": "微笑",
+      "values": {
+        "ParamMouthForm": 0.55
+      }
+    },
+    "Happy": {
+      "label": "闭眼笑",
+      "values": {
+        "ParamEyeLOpen": 0,
+        "ParamEyeROpen": 0,
+        "ParamEyeLSmile": 1,
+        "ParamEyeRSmile": 1,
+        "ParamMouthForm": 0.65,
+        "ParamMouthOpenY": 0.12
+      }
+    },
+    "Shy": {
+      "label": "害羞",
+      "values": {
+        "ParamCheek": 0.6,
+        "ParamMouthForm": 0.25,
+        "ParamEyeLOpen": 0.9,
+        "ParamEyeROpen": 0.9,
+        "ParamBrowLForm": 0.2,
+        "ParamBrowRForm": 0.2
+      }
+    },
+    "Sad": {
+      "label": "难过",
+      "values": {
+        "ParamBrowLForm": 0.75,
+        "ParamBrowRForm": 0.75,
+        "ParamMouthForm": -0.4,
+        "ParamEyeLOpen": 0.85,
+        "ParamEyeROpen": 0.85
+      }
+    },
+    "Cry": {
+      "label": "含泪",
+      "values": {
+        "ParamTear": 0.8,
+        "ParamBrowLForm": 0.65,
+        "ParamBrowRForm": 0.65,
+        "ParamMouthForm": -0.3
+      }
+    },
+    "Angry": {
+      "label": "不悦",
+      "values": {
+        "ParamBrowLForm": -0.65,
+        "ParamBrowRForm": -0.65,
+        "ParamEyeNarrow": 0.35,
+        "ParamMouthForm": -0.25,
+        "ParamMouthPress": 0.2
+      }
+    },
+    "Surprised": {
+      "label": "惊讶",
+      "values": {
+        "ParamEyeLOpen": 1.1,
+        "ParamEyeROpen": 1.1,
+        "ParamBrowLY": 0.35,
+        "ParamBrowRY": 0.35,
+        "ParamMouthO": 0.22
+      }
+    },
+    "Thinking": {
+      "label": "思考",
+      "values": {
+        "ParamBrowLY": 0.35,
+        "ParamBrowRY": -0.15,
+        "ParamMouthPress": 0.25,
+        "ParamEyeLOpen": 0.9
+      }
+    },
+    "Wink": {
+      "label": "眨左眼",
+      "values": {
+        "ParamEyeLOpen": 0,
+        "ParamEyeLSmile": 1,
+        "ParamMouthForm": 0.4
+      }
+    },
+    "SoftEyes": {
+      "label": "轻轻闭眼",
+      "values": {
+        "ParamEyeLOpen": 0,
+        "ParamEyeROpen": 0,
+        "ParamEyeLSmile": 0.6,
+        "ParamEyeRSmile": 0.6,
+        "ParamMouthForm": 0.15
+      }
+    },
+    "StarEyes": {
+      "label": "星星眼 · 原模型",
+      "values": {
+        "ParamEyeHighlight": 1,
+        "ParamMouthForm": 0.4
+      }
+    },
+    "HeartEyes": {
+      "label": "爱心眼 · 原模型",
+      "values": {
+        "ParamEyeHeart": 1,
+        "ParamMouthForm": 0.35
+      }
+    },
+    "Question": {
+      "label": "疑问 · 原模型",
+      "values": {
+        "ParamQuestion": 0.8,
+        "ParamBrowLY": 0.35,
+        "ParamBrowRY": 0.35
+      }
+    },
+    "Awkward": {
+      "label": "汗滴 · 原模型",
+      "values": {
+        "ParamSweat": 0.7,
+        "ParamBrowLForm": 0.4,
+        "ParamBrowRForm": 0.4
+      }
+    }
+  }
+}

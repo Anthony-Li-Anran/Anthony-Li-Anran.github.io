@@ -1,0 +1,268 @@
+{
+  "Version": 3,
+  "Parameters": [
+    {
+      "Id": "ParamAngleX",
+      "GroupId": "Head",
+      "Name": "头部左右"
+    },
+    {
+      "Id": "ParamAngleY",
+      "GroupId": "Head",
+      "Name": "头部上下"
+    },
+    {
+      "Id": "ParamAngleZ",
+      "GroupId": "Head",
+      "Name": "歪头"
+    },
+    {
+      "Id": "ParamEyeLOpen",
+      "GroupId": "Eyes",
+      "Name": "左眼开合"
+    },
+    {
+      "Id": "ParamEyeLSmile",
+      "GroupId": "Eyes",
+      "Name": "左眼笑眼"
+    },
+    {
+      "Id": "ParamBrowLY",
+      "GroupId": "Brows",
+      "Name": "左眉上下"
+    },
+    {
+      "Id": "ParamBrowLX",
+      "GroupId": "Brows",
+      "Name": "左眉左右"
+    },
+    {
+      "Id": "ParamBrowLAngle",
+      "GroupId": "Brows",
+      "Name": "左眉角度"
+    },
+    {
+      "Id": "ParamBrowLForm",
+      "GroupId": "Brows",
+      "Name": "左眉眉形"
+    },
+    {
+      "Id": "ParamEyeROpen",
+      "GroupId": "Eyes",
+      "Name": "右眼开合"
+    },
+    {
+      "Id": "ParamEyeRSmile",
+      "GroupId": "Eyes",
+      "Name": "右眼笑眼"
+    },
+    {
+      "Id": "ParamBrowRY",
+      "GroupId": "Brows",
+      "Name": "右眉上下"
+    },
+    {
+      "Id": "ParamBrowRX",
+      "GroupId": "Brows",
+      "Name": "右眉左右"
+    },
+    {
+      "Id": "ParamBrowRAngle",
+      "GroupId": "Brows",
+      "Name": "右眉角度"
+    },
+    {
+      "Id": "ParamBrowRForm",
+      "GroupId": "Brows",
+      "Name": "右眉眉形"
+    },
+    {
+      "Id": "ParamEyeBallX",
+      "GroupId": "Eyes",
+      "Name": "视线左右"
+    },
+    {
+      "Id": "ParamEyeBallY",
+      "GroupId": "Eyes",
+      "Name": "视线上下"
+    },
+    {
+      "Id": "ParamEyeBallForm",
+      "GroupId": "Eyes",
+      "Name": "瞳孔大小"
+    },
+    {
+      "Id": "ParamEyeNarrow",
+      "GroupId": "Eyes",
+      "Name": "认真眼神"
+    },
+    {
+      "Id": "ParamMouthOpenY",
+      "GroupId": "Mouth",
+      "Name": "嘴巴开合"
+    },
+    {
+      "Id": "ParamMouthForm",
+      "GroupId": "Mouth",
+      "Name": "嘴角"
+    },
+    {
+      "Id": "ParamMouthI",
+      "GroupId": "Mouth",
+      "Name": "咿"
+    },
+    {
+      "Id": "ParamMouthU",
+      "GroupId": "Mouth",
+      "Name": "呜"
+    },
+    {
+      "Id": "ParamMouthE",
+      "GroupId": "Mouth",
+      "Name": "诶"
+    },
+    {
+      "Id": "ParamMouthO",
+      "GroupId": "Mouth",
+      "Name": "哦"
+    },
+    {
+      "Id": "ParamMouthPress",
+      "GroupId": "Mouth",
+      "Name": "抿嘴"
+    },
+    {
+      "Id": "ParamCheek",
+      "GroupId": "Effects",
+      "Name": "自然脸红"
+    },
+    {
+      "Id": "ParamBodyAngleX",
+      "GroupId": "Body",
+      "Name": "身体左右"
+    },
+    {
+      "Id": "ParamBodyAngleY",
+      "GroupId": "Body",
+      "Name": "身体俯仰"
+    },
+    {
+      "Id": "ParamBodyAngleZ",
+      "GroupId": "Body",
+      "Name": "身体轻摆"
+    },
+    {
+      "Id": "ParamBreath",
+      "GroupId": "Body",
+      "Name": "呼吸"
+    },
+    {
+      "Id": "ParamHairFront",
+      "GroupId": "Hair",
+      "Name": "刘海惯性"
+    },
+    {
+      "Id": "ParamHairSide",
+      "GroupId": "Hair",
+      "Name": "左侧发惯性"
+    },
+    {
+      "Id": "ParamHairSideR",
+      "GroupId": "Hair",
+      "Name": "右侧发惯性"
+    },
+    {
+      "Id": "ParamHairBack",
+      "GroupId": "Hair",
+      "Name": "后发惯性"
+    },
+    {
+      "Id": "ParamHairFluffy",
+      "GroupId": "Hair",
+      "Name": "头发纵向弹性"
+    },
+    {
+      "Id": "ParamTear",
+      "GroupId": "Effects",
+      "Name": "含泪"
+    },
+    {
+      "Id": "ParamEyeHighlight",
+      "GroupId": "Eyes",
+      "Name": "星星眼"
+    },
+    {
+      "Id": "ParamEyeHeart",
+      "GroupId": "Eyes",
+      "Name": "爱心眼"
+    },
+    {
+      "Id": "ParamBlushLines",
+      "GroupId": "Effects",
+      "Name": "漫画脸红"
+    },
+    {
+      "Id": "ParamAnger",
+      "GroupId": "Effects",
+      "Name": "生气符号"
+    },
+    {
+      "Id": "ParamSweat",
+      "GroupId": "Effects",
+      "Name": "汗滴"
+    },
+    {
+      "Id": "ParamQuestion",
+      "GroupId": "Effects",
+      "Name": "疑问符号"
+    },
+    {
+      "Id": "ParamSurpriseMark",
+      "GroupId": "Effects",
+      "Name": "惊叹符号"
+    }
+  ],
+  "ParameterGroups": [
+    {
+      "Id": "Head",
+      "GroupId": "",
+      "Name": "头部"
+    },
+    {
+      "Id": "Eyes",
+      "GroupId": "",
+      "Name": "眼睛"
+    },
+    {
+      "Id": "Brows",
+      "GroupId": "",
+      "Name": "眉毛"
+    },
+    {
+      "Id": "Mouth",
+      "GroupId": "",
+      "Name": "嘴型"
+    },
+    {
+      "Id": "Body",
+      "GroupId": "",
+      "Name": "身体"
+    },
+    {
+      "Id": "Hair",
+      "GroupId": "",
+      "Name": "头发物理"
+    },
+    {
+      "Id": "Effects",
+      "GroupId": "",
+      "Name": "表情特效"
+    }
+  ],
+  "Parts": [
+    {
+      "Id": "PartStelle",
+      "Name": "星"
+    }
+  ]
+}
