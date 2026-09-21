@@ -6,13 +6,12 @@
   const panel = document.getElementById('live2d-panel');
   const host = document.getElementById('live2d-portrait');
   const canvas = document.getElementById('live2d-canvas');
-  const message = document.getElementById('live2d-message');
   const show = document.getElementById('live2d-show');
   const hide = document.getElementById('live2d-hide');
   const greet = document.getElementById('live2d-greet');
-  const expressionMenu = document.getElementById('live2d-expressions');
-  const expressionToggle = document.getElementById('live2d-expressions-toggle');
-  const expressionSelect = document.getElementById('live2d-expression');
+
+
+  let expressionName = 'Neutral', gesture = 'none', gestureStart = 0;
   const desktop = matchMedia('(min-width: 1024px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const storageKey = 'anthony-live2d-hidden';
@@ -20,7 +19,7 @@
   let app, model, physics, loading = false, active = false;
   const hairParameters = ['ParamHairFront', 'ParamHairSide', 'ParamHairSideR', 'ParamHairBack', 'ParamHairFluffy'];
   let dismissed = reduced.matches;
-  let last = 0, blinkStart = -100, messageTimer;
+  let last = 0, blinkStart = -100;
   let expressionData, expressionUntil = 0;
   let expressionTarget = {}, expressionCurrent = {};
   let target = { x: 0, y: 0 }, pointer = { x: 0, y: 0 };
@@ -33,18 +32,11 @@
     try { localStorage.setItem(storageKey, String(dismissed)); } catch (_) { /* Optional. */ }
   }
 
-  function say(text, duration) {
-    clearTimeout(messageTimer);
-    message.textContent = text;
-    message.hidden = false;
-    messageTimer = setTimeout(() => { message.hidden = true; }, duration || 4000);
-  }
-
   function setExpression(name, duration = 6000) {
     if (!expressionData || !expressionData.presets[name]) return;
     expressionTarget = { ...expressionData.defaults, ...expressionData.presets[name].values };
     expressionUntil = duration ? performance.now() + duration : Infinity;
-    expressionSelect.value = name;
+    expressionName = name;
   }
 
   function fit() {
@@ -109,20 +101,23 @@
     const lerp = 1 - Math.exp(-dt * 12);
     pointer.x += (target.x - pointer.x) * lerp;
     pointer.y += (target.y - pointer.y) * lerp;
-    if (performance.now() > expressionUntil && expressionSelect.value !== 'Neutral') setExpression('Neutral', 0);
+    if (performance.now() > expressionUntil && expressionName !== 'Neutral') setExpression('Neutral', 0);
     for (const [id,value] of Object.entries(expressionTarget)) {
       const current = expressionCurrent[id] ?? value;
       expressionCurrent[id] = reduced.matches ? value : current + (value-current) * lerp;
       if (Math.abs(expressionCurrent[id]-value)<.001) expressionCurrent[id]=value;
     }
     const eye = Math.min(blink(t - blinkStart), reduced.matches ? 1 : blink(t % 5.2 - 2));
+    const age = t - gestureStart;
+    const nod = gesture === 'nod' && age < 1.2 ? Math.sin(age / 1.2 * Math.PI * 2) * Math.sin(age / 1.2 * Math.PI) * 6 : 0;
+    const tilt = gesture === 'tilt' && age < 2 ? Math.sin(age / 2 * Math.PI) * 5 : 0;
     const values = {
       ...expressionCurrent,
       ParamEyeLOpen: (expressionCurrent.ParamEyeLOpen ?? 1) * eye,
       ParamEyeROpen: (expressionCurrent.ParamEyeROpen ?? 1) * eye,
       ParamAngleX: reduced.matches ? 0 : pointer.x * 25,
-      ParamAngleY: reduced.matches ? 0 : pointer.y * 23,
-      ParamAngleZ: reduced.matches ? 0 : -pointer.x * 2.8 + Math.sin(t * .7) * .8,
+      ParamAngleY: reduced.matches ? 0 : pointer.y * 23 + nod,
+      ParamAngleZ: reduced.matches ? 0 : -pointer.x * 2.8 + Math.sin(t * .7) * .8 + tilt,
       ParamEyeBallX: reduced.matches ? 0 : pointer.x,
       ParamEyeBallY: reduced.matches ? 0 : pointer.y,
       ParamBreath: reduced.matches ? 0 : (Math.sin(t * 1.5) + 1) / 2,
@@ -165,10 +160,7 @@
       if (!expressionResponse.ok) throw new Error('Unable to load expression definitions');
       expressionData = await expressionResponse.json();
       expressionCurrent = { ...expressionData.defaults };
-      expressionSelect.replaceChildren(...Object.entries(expressionData.presets).map(([name,preset]) => {
-        const option = document.createElement('option'); option.value = name; option.textContent = preset.label; return option;
-      }));
-      expressionSelect.disabled = false;
+
       setExpression('Neutral', 0);
       model.anchor.set(0, 0);
       app.stage.addChild(model);
@@ -195,10 +187,7 @@
   hide.addEventListener('click', () => {
     dismissed = true;
     remember();
-    clearTimeout(messageTimer);
-    message.hidden = true;
-    expressionMenu.hidden = true;
-    expressionToggle.setAttribute('aria-expanded','false');
+    companion.dispatchEvent(new CustomEvent('stelle:hide'));
     syncVisibility();
     show.focus();
   });
@@ -210,18 +199,11 @@
     syncVisibility();
     if (!panel.hidden) greet.focus();
   });
-  greet.addEventListener('click', () => {
-    blinkStart = performance.now() / 1000;
-    setExpression('Smile');
-    say('Anthony，今天从哪里开始开拓？我已经就位了。');
-  });
-  expressionToggle.addEventListener('click', () => {
-    expressionMenu.hidden = !expressionMenu.hidden;
-    expressionToggle.setAttribute('aria-expanded', String(!expressionMenu.hidden));
-  });
-  expressionSelect.addEventListener('change', () => setExpression(expressionSelect.value, 8000));
-  companion.addEventListener('keydown', event => {
-    if (event.key === 'Escape') { expressionMenu.hidden = true; expressionToggle.setAttribute('aria-expanded','false'); expressionToggle.focus(); }
+  companion.addEventListener('stelle:perform', event => {
+    const intent = event.detail || {};
+    setExpression(intent.expression || 'Neutral', Math.min(8000, Math.max(500, intent.duration || 4500)));
+    gesture = ['nod', 'tilt'].includes(intent.motion) ? intent.motion : 'none';
+    gestureStart = performance.now() / 1000;
   });
 
   function trackAxis(position, origin, extent) {
@@ -240,7 +222,7 @@
   new ResizeObserver(fit).observe(host);
   desktop.addEventListener('change', () => { syncVisibility(); start(); });
   reduced.addEventListener('change', () => {
-    if (reduced.matches) { dismissed = true; message.hidden = true; }
+    if (reduced.matches) { dismissed = true; companion.dispatchEvent(new CustomEvent('stelle:hide')); }
     syncVisibility();
   });
   document.addEventListener('visibilitychange', syncVisibility);

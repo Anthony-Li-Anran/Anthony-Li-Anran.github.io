@@ -1,25 +1,31 @@
 {% if site.live2d.enabled and site.live2d.model != empty and page.live2d != false %}
 <link rel="stylesheet" href="{{ '/assets/css/live2d.css' | relative_url }}?v={{ site.time | date: '%s' }}">
-<aside id="live2d-companion" lang="zh-CN" aria-label="星 · Live2D 看板娘"
-       data-model="{{ site.live2d.model | relative_url | escape }}"
-       data-runtime="{{ '/assets/live2d/runtime/' | relative_url }}" hidden>
-  <div id="live2d-panel" hidden>
-    <p id="live2d-message" role="status" hidden></p>
-    <div id="live2d-portrait" aria-hidden="true">
-      <canvas id="live2d-canvas" width="320" height="230"></canvas>
-    </div>
-    <div class="live2d-actions">
-      <button id="live2d-greet" type="button">打个招呼</button>
-      <button id="live2d-expressions-toggle" type="button" aria-controls="live2d-expressions" aria-expanded="false">表情</button>
-      <button id="live2d-hide" type="button" aria-label="隐藏看板娘">隐藏</button>
-    </div>
-    <div id="live2d-expressions" hidden>
-      <label for="live2d-expression">看看星的表情</label>
-      <select id="live2d-expression" aria-label="星的表情" disabled><option value="Neutral">自然</option></select>
-    </div>
-  </div>
-  <button id="live2d-show" type="button" aria-controls="live2d-panel"
-          aria-expanded="false" hidden>显示看板娘</button>
+<aside id="live2d-companion" lang="zh-CN" aria-label="星 · 网站伙伴"
+ data-model="{{ site.live2d.model | relative_url | escape }}"
+ data-api="{{ site.live2d.api_url | escape }}" data-page-title="{{ page.title | default: '首页' | escape }}"
+ data-intro="{{ page.companion_intro | escape }}"
+ data-runtime="{{ '/assets/live2d/runtime/' | relative_url }}" hidden>
+ <div id="live2d-panel" hidden>
+  <div id="stelle-intro" hidden><button type="button" id="stelle-intro-close" aria-label="关闭介绍">×</button><p id="live2d-message" role="status"></p></div>
+  <section id="stelle-chat" aria-label="和星聊天" hidden>
+   <header class="stelle-header"><span class="stelle-star" aria-hidden="true">✦</span><div><strong>星</strong><small id="stelle-status" role="status">在这里，陪你看看。</small></div><button id="stelle-settings-toggle" type="button" aria-label="连接与偏好设置" aria-expanded="false">⚙</button><button id="stelle-close" type="button" aria-label="收起聊天">−</button></header>
+   <form id="stelle-settings" hidden>
+    <label>连接方式<select id="stelle-mode"><option value="invite">邀请码体验</option><option value="byok">使用自己的 API</option></select></label>
+    <div id="stelle-byok" hidden><label>服务商<select id="stelle-provider"><option value="deepseek">DeepSeek</option><option value="qwen">千问</option></select></label><label>模型<input id="stelle-model" value="deepseek-v4-flash" maxlength="80" autocomplete="off"></label><label>API Key<input id="stelle-key" type="password" autocomplete="off" maxlength="512" placeholder="仅在当前页面使用"></label><p class="stelle-note">密钥经本站后端转发给所选服务商，不保存；离开页面需重新填写。费用由你的服务商账户承担。</p></div>
+    <div id="stelle-invite-fields"><label>邀请码<input id="stelle-invite" type="password" maxlength="128" autocomplete="off" placeholder="输入 Anthony 分享的邀请码"></label></div>
+    <label class="stelle-check"><input id="stelle-auto-intro" type="checkbox" checked>切换页面时介绍一下</label>
+    <div class="stelle-settings-actions"><button type="submit">连接</button><button id="stelle-clear" type="button">清除会话与凭证</button></div>
+   </form>
+   <div id="stelle-messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions"></div>
+   <div id="stelle-suggestions"><button type="button" data-prompt="介绍一下这页">介绍这页</button><button type="button" data-prompt="Anthony最近在忙什么？">他的近况</button></div>
+   <form id="stelle-compose"><label class="stelle-sr" for="stelle-input">想和星说什么？</label><textarea id="stelle-input" rows="1" maxlength="2000" placeholder="想聊什么？" enterkeyhint="send"></textarea><button id="stelle-send" type="submit" aria-label="发送消息">↑</button><button id="stelle-stop" type="button" hidden>停止</button></form>
+   <p class="stelle-footnote">AI 的回答可能有误 · 关于 Anthony 的信息以公开资料为准</p>
+  </section>
+  <div id="live2d-portrait" aria-hidden="true"><canvas id="live2d-canvas" width="320" height="230"></canvas></div>
+  <div class="live2d-actions"><button id="live2d-greet" type="button" aria-controls="stelle-chat" aria-expanded="false"><span aria-hidden="true">✦</span> 和星聊聊</button><button id="live2d-hide" type="button" aria-label="隐藏看板娘">×</button></div>
+ </div>
+ <button id="live2d-show" type="button" aria-controls="live2d-panel" aria-expanded="false" hidden>✦ 星</button>
 </aside>
 <script defer src="{{ '/assets/js/live2d.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/stelle-chat.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 {% endif %}

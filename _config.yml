@@ -21,6 +21,7 @@ repository               : "Anthony-Li-Anran/Anthony-Li-Anran.github.io"
 # Site Author - The following control what appear as part of the author content on the side bar.
 live2d:
   enabled: true
+  api_url: "" # Deployed HTTPS backend; localhost preview uses port 8787.
   model: "/assets/live2d/stelle-cubism-20260919/Stelle.model3.json"
 
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.
@@ -173,6 +174,7 @@ include:
   - _pages
   - files
 exclude:
+  - companion-api
   - "*.sublime-project"
   - "*.sublime-workspace"
   - .asset-cache

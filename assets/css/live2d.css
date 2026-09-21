@@ -1,92 +1,42 @@
-#live2d-companion {
-  position: fixed;
-  right: 18px;
-  bottom: 12px;
-  width: 320px;
-  z-index: 20;
-  pointer-events: none;
-  font: 13px/1.6 system-ui, sans-serif;
-  color: var(--global-text-color, #222831);
-}
-
-#live2d-companion[hidden], #live2d-companion [hidden] {
-  display: none !important;
-}
-
-#live2d-portrait {
-  height: 230px;
-  overflow: hidden;
-  mask-image: linear-gradient(to bottom, #000 97%, transparent);
-}
-
-#live2d-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  /* Transparent pixels and the portrait leave page links clickable. */
-  pointer-events: none;
-}
-
-#live2d-message {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + 8px);
-  max-width: 260px;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 10px 14px;
-  border: 1px solid var(--global-border-color, #0092ca);
-  border-radius: 14px 14px 4px 14px;
-  background: var(--global-bg-color, #eee);
-  box-shadow: 0 4px 18px rgb(0 0 0 / 10%);
-}
-
-.live2d-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 8px;
-  margin-top: 4px;
-}
-
-#live2d-companion button {
-  pointer-events: auto;
-  cursor: pointer;
-  min-height: 34px;
-  margin: 0;
-  padding: 5px 12px;
-  border: 1px solid var(--global-border-color, #0092ca);
-  border-radius: 18px;
-  background: var(--global-bg-color, #eee);
-  color: inherit;
-  font: inherit;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
-}
-
-#live2d-companion button:hover, #live2d-companion button:focus-visible {
-  outline: 2px solid var(--global-base-color, #0092ca);
-  outline-offset: 3px;
-}
-
-#live2d-show { float: right; }
-
-#live2d-expressions {
-  pointer-events: auto;
-  margin-top: 6px;
-  padding: 8px 12px;
-  border-radius: 12px;
-  border: 1px solid var(--global-border-color, #0092ca);
-  background: var(--global-bg-color, #eee);
-}
-#live2d-expressions label { font: inherit; margin-right: 8px; }
-#live2d-expression { width: auto; display: inline-block; margin: 0; padding: 4px; font: inherit; color: inherit; background: inherit; }
-#live2d-message { max-height: 200px; overflow-y: auto; pointer-events: auto; overflow-wrap: anywhere; }
-#live2d-companion button:disabled { cursor: wait; opacity: .65; }
-
-@media (min-width: 1500px) {
-  #live2d-companion { width: 350px; right: 40px; }
-  #live2d-portrait { height: 247px; }
-}
-
-@media (max-width: 1023px), print {
-  #live2d-companion { display: none !important; }
-}
+#live2d-companion{--stelle-bg:var(--global-bg-color,#fff);--stelle-ink:var(--global-text-color,#29313b);--stelle-line:color-mix(in srgb,var(--stelle-ink) 15%,transparent);--stelle-gold:#ad8745;position:fixed;right:22px;bottom:12px;width:320px;z-index:30;pointer-events:none;font:13px/1.65 system-ui,sans-serif;color:var(--stelle-ink)}
+#live2d-companion[hidden],#live2d-companion [hidden]{display:none!important}
+#live2d-portrait{height:230px;overflow:hidden;mask-image:linear-gradient(to bottom,#000 94%,transparent)}
+#live2d-canvas{display:block;width:100%;height:100%;pointer-events:none}
+#live2d-companion button,#live2d-companion input,#live2d-companion select,#live2d-companion textarea{font:inherit;color:inherit;margin:0;box-sizing:border-box}
+#live2d-companion button{pointer-events:auto;cursor:pointer;border:1px solid var(--stelle-line);background:var(--stelle-bg);border-radius:12px;padding:6px 11px;min-height:34px;box-shadow:none}
+#live2d-companion button:hover{border-color:var(--stelle-gold)}
+#live2d-companion :focus-visible{outline:2px solid var(--stelle-gold);outline-offset:3px}
+#live2d-companion button:disabled{opacity:.5;cursor:wait}
+.live2d-actions{display:flex;justify-content:center;gap:6px;margin-top:2px}
+#live2d-greet{border-radius:22px!important;padding:7px 18px!important;box-shadow:0 3px 14px #0000000d!important}
+#live2d-greet span,.stelle-star{color:var(--stelle-gold)}
+#live2d-hide{border:0!important;background:transparent!important}
+#live2d-show{float:right}
+#stelle-intro,#stelle-chat{pointer-events:auto;background:var(--stelle-bg);border:1px solid var(--stelle-line);box-shadow:0 12px 38px #00000012;border-radius:19px 19px 5px 19px;position:absolute;right:8px;bottom:calc(100% - 20px);width:322px;box-sizing:border-box}
+#stelle-intro{width:280px;padding:17px 29px 17px 19px}
+#live2d-message{margin:0;font-size:13px;line-height:1.85}
+#stelle-intro-close{position:absolute;right:3px;top:3px;border:0!important;background:transparent!important;padding:0!important;min-height:26px!important;width:26px}
+#stelle-chat{width:360px;overflow:hidden;display:flex;flex-direction:column;max-height:calc(100dvh - 270px)}
+.stelle-header{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--stelle-line);flex-shrink:0}
+.stelle-star{font-size:24px}.stelle-header>div{flex:1}.stelle-header strong{font-size:15px;font-weight:600}.stelle-header small{display:block;font-size:11px;opacity:.65;line-height:1.5}
+.stelle-header button{border:0!important;background:transparent!important;padding:3px 8px!important;font-size:19px!important}
+#stelle-messages{overflow-y:auto;overscroll-behavior:contain;min-height:100px;max-height:290px;padding:16px;scrollbar-width:thin}
+.stelle-message{margin:0 0 15px;overflow-wrap:anywhere;white-space:pre-wrap;font-size:13px;line-height:1.85}
+.stelle-message[data-role=user]{background:color-mix(in srgb,var(--stelle-gold) 12%,var(--stelle-bg));border-radius:13px 13px 3px 13px;padding:8px 12px;margin-left:32px}
+.stelle-message[data-role=assistant]{padding:2px 6px 2px 0}.stelle-message[data-role=notice]{font-size:12px;opacity:.7}
+.stelle-message p{margin:0 0 9px;font:inherit}.stelle-sources{display:flex;gap:7px;flex-wrap:wrap}.stelle-sources a{font-size:11px;color:var(--stelle-gold)}
+#stelle-suggestions{display:flex;gap:7px;padding:0 16px 10px}#stelle-suggestions button{font-size:11px;border-radius:20px;min-height:28px;padding:3px 10px}
+#stelle-compose{display:flex;align-items:flex-end;gap:8px;margin:0 12px;padding:8px;border:1px solid var(--stelle-line);border-radius:13px}
+#stelle-input{resize:none;width:100%;border:0;background:transparent;box-shadow:none;min-height:33px;max-height:90px;padding:5px;line-height:1.6}
+#stelle-send{background:var(--stelle-ink)!important;color:var(--stelle-bg)!important;border:0!important;width:34px;flex-shrink:0;font-size:20px!important;padding:0!important}
+.stelle-footnote{font-size:10px!important;opacity:.55;text-align:center;margin:8px 10px 11px!important}
+#stelle-settings{padding:13px 16px;overflow-y:auto;border-bottom:1px solid var(--stelle-line);max-height:290px;margin:0}
+#stelle-settings label{display:block;font-size:12px;margin-bottom:9px}#stelle-settings input:not([type=checkbox]),#stelle-settings select{display:block;width:100%;padding:7px 9px;background:var(--stelle-bg);border:1px solid var(--stelle-line);border-radius:8px;margin-top:4px;box-shadow:none;height:auto}
+.stelle-note{font-size:11px!important;opacity:.7;margin:7px 0!important}.stelle-check{display:flex!important;align-items:center;gap:8px}.stelle-settings-actions{display:flex;gap:8px}.stelle-settings-actions button{font-size:11px!important}
+.stelle-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+#stelle-chat.settings-open #stelle-messages,#stelle-chat.settings-open #stelle-compose,#stelle-chat.settings-open #stelle-suggestions,#stelle-chat.settings-open .stelle-footnote{display:none}
+#stelle-chat.settings-open #stelle-settings{max-height:none;min-height:0}
+#live2d-companion strong{color:inherit}
+@media(min-width:1500px){#live2d-companion{width:350px;right:40px}#live2d-portrait{height:247px}}
+@media(max-height:700px){#stelle-chat{bottom:75px;right:270px;max-height:calc(100dvh - 40px)}}
+@media(max-width:1023px),print{#live2d-companion{display:none!important}}

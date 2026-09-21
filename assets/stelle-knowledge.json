@@ -1,0 +1,12 @@
+---
+layout: null
+permalink: /assets/stelle-knowledge.json
+---
+{ "documents": [
+{% assign entries = site.documents | concat: site.pages %}
+{% assign first = true %}
+{% for entry in entries %}{% if entry.title and entry.published != false and entry.url and entry.sitemap != false %}
+{% unless entry.url contains '.json' %}{% unless first %},{% endunless %}{% assign first = false %}
+{"title":{{ entry.title | jsonify }},"url":{{ entry.url | relative_url | jsonify }},"text":{{ entry.content | markdownify | strip_html | normalize_whitespace | truncate: 18000 | jsonify }}}
+{% endunless %}{% endif %}{% endfor %}
+]}
