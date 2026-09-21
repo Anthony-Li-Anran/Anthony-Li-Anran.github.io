@@ -1,5 +1,21 @@
 # 星 · 阶段一对话服务
 
+> **当前网站已改为浏览器直连（2026-09-21）**：GitHub Pages 不需要部署本目录的 Python 服务。设置中只有访客自带 API，没有邀请码或 Anthony 额度入口。下面的后端部署说明保留供以后重新开放邀请码时使用。
+
+## 当前 GitHub Pages 用法
+
+1. 点击看板娘“和星聊聊”→设置。
+2. 选择 DeepSeek 或千问（北京地域），填写该账户可用的模型名称和自己的 API Key，点击连接，再发送消息。
+3. 浏览器直接向选定服务商发出请求，密钥只在当前页面内存中保存，离开或刷新页面需重新填写。不会调用 `/api/chat`、兑换邀请码或回退到 Anthony 的密钥。会话文字仍保存在当前标签页，可通过“清除会话与凭证”删除。
+
+公开资料随 Jekyll 构建发布：`assets/stelle-knowledge.json` 为文章索引；`assets/stelle-context.json` 从 `_data/stelle_updates.json` 和 `_data/stelle_memes.json` 生成。近况只输出 public=true 且未撤回的记录，并由浏览器执行七天筛选。不要把私密资料放进公开 Git 仓库；构建过滤不是仓库内容的访问控制。旧 `companion-api/data` 文件仅供保留的后端使用，当前网站不读它们。
+
+浏览器执行资料检索、近况判断、梗筛选、SSE 解析和表演允许列表验证。密钥仅通过 Authorization 请求头送往固定的服务商地址，静态资料请求不带密钥，重定向被拒绝。跨域或网络失败会明确提示，不尝试付费备用线路。
+
+传输测试：`node --test companion-api/test_direct.cjs`。跨域预检已用网站 Origin 探测；真实 Key 的鉴权、付费生成质量仍需访客自己的账户验证。服务商的跨域策略以后可能变化，不能将当前结果视为长期保证。
+
+## 保留的后端方案（当前网站不使用）
+
 Python 3.11+ / FastAPI，静态网站继续由 Jekyll 构建。支持 DeepSeek、千问的兼容聊天接口；地址固定，访客不能配置任意转发 URL。千问当前使用北京地域接口，Key 必须匹配该地域。其他地域需要维护者修改允许列表后验证。
 
 聊天请求显式关闭深度思考，减少等待并约束输出用量。参考 [DeepSeek 请求格式](https://api-docs.deepseek.com/api/create-chat-completion/) 与 [千问深度思考开关](https://help.aliyun.com/zh/model-studio/deep-thinking)。只选择支持关闭思考的聊天模型，具体模型兼容性仍需真实账户验证。

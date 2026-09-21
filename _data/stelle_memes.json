@@ -1,0 +1,5 @@
+[
+  {"id":"trashcan","terms":["垃圾桶","桶王","翻桶"],"meaning":"接住开拓者与垃圾桶相关的玩笑。官方曾举行桶相关活动并使用 TrailblazerObsession 话题；不将垃圾桶说成人物唯一爱好，不补写未知剧情。","example":"先别急着路过，说不定里面真有值得发现的东西。","type":"官方活动呼应的社区梗；示例为网站原创","source":"https://www.hoyolab.com/article/25102028","verified_at":"2026-09-21","spoiler":false},
+  {"id":"side-quest","terms":["更新","忘记","任务","近况"],"meaning":"将忘记更新近况轻轻比作落下支线任务；必须先确认没有近期记录，只能说可能忘记。","example":"Anthony 可能又把更新近况这个支线任务忘了。","type":"网站原创玩笑","spoiler":false},
+  {"id":"formula-boss","terms":["公式","推导","看不懂","难"],"meaning":"用副本机制比喻复杂推导，先解释问题，不把调侃冒充游戏原台词。","example":"先拆开看。Anthony 这次写的副本，机制确实有点多。","type":"网站原创玩笑","spoiler":false}
+]

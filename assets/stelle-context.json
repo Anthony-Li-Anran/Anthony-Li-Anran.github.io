@@ -1,0 +1,5 @@
+---
+layout: null
+permalink: /assets/stelle-context.json
+---
+{"updates":[{% assign first = true %}{% for row in site.data.stelle_updates %}{% if row.public == true and row.revoked != true %}{% unless first %},{% endunless %}{% assign first = false %}{"public":true,"text":{{ row.text | jsonify }},"topics":{{ row.topics | jsonify }},"occurred_at":{{ row.occurred_at | jsonify }},"confirmed_at":{{ row.confirmed_at | jsonify }},"expires_at":{{ row.expires_at | jsonify }}}{% endif %}{% endfor %}],"memes":{{ site.data.stelle_memes | jsonify }}}
