@@ -22,7 +22,7 @@ test('direct SSE decodes split UTF8 and validates performance, without proxy',as
  const f=fixture(()=>response('{"text":"你好，Anthony 的访客。","expression":"Smile","motion":"nod"}\n'));
  try{
   const events=await collect(options());
-  assert.equal(events.find(e=>e.type==='text').text,'你好，Anthony 的访客。\n');assert.equal(events.at(-1).type,'done');
+  assert.equal(events.find(e=>e.type==='text').text,'你好，Anthony 的访客。');assert.equal(events.at(-1).type,'done');
   const request=f.requests.at(-1);assert.equal(request.url,direct.providers.deepseek.url);
   assert.equal(request.init.headers.Authorization,'Bearer visitor-test-key');
   assert.equal(request.init.credentials,'omit');assert.equal(request.init.redirect,'error');
@@ -63,4 +63,16 @@ test('retrieval retains public page context, excludes unsafe URLs and repeats',(
  const result=direct.context('垃圾桶','/',[],['trash'],{documents:[{title:'Home',url:'/',text:'Anthony'},{title:'垃圾桶',url:'//evil.test',text:'垃圾桶'}]},{updates:[],memes:[{id:'trash',terms:['垃圾桶']}]});
  assert.equal(result.website.documents.length,1);assert.equal(result.memes.length,0);
  assert.equal(direct.sentence('{"text":"ok","motion":"eval","expression":{}}',new Set()).motion,'none');
+});
+test('reply parser accepts fenced pretty JSON, arrays, NDJSON and plain text',()=>{
+ const allowed=new Set(['meme']);
+ const pretty='```json\n{\n  "segments": [\n    {"text":"第一句。","expression":"Smile","motion":"nod"},\n    {"text":"第二句。","expression":"bad","motion":"eval"}\n  ]\n}\n```';
+ assert.deepEqual(direct.parseReply(pretty,allowed).map(x=>x.text),['第一句。','第二句。']);
+ assert.equal(direct.parseReply(pretty,allowed)[1].expression,'Neutral');
+ assert.equal(direct.parseReply('[{"text":"数组回答。"}]',allowed)[0].text,'数组回答。');
+ assert.deepEqual(direct.parseReply('{"text":"一。"}\n{"text":"二。"}',allowed).map(x=>x.text),['一。','二。']);
+ assert.equal(direct.parseReply('普通文字也应该显示。',allowed)[0].text,'普通文字也应该显示。');
+});
+test('reply parser recovers text from a truncated JSON object',()=>{
+ assert.equal(direct.parseReply('{"text":"已经生成的内容。","expression":',new Set())[0].text,'已经生成的内容。');
 });

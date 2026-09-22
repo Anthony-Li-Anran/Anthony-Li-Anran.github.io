@@ -10,7 +10,7 @@
   <section id="stelle-chat" aria-label="和星聊天" hidden>
    <header class="stelle-header"><span class="stelle-star" aria-hidden="true">✦</span><div><strong>星</strong><small id="stelle-status" role="status">在这里，陪你看看。</small></div><button id="stelle-settings-toggle" type="button" aria-label="连接与偏好设置" aria-expanded="false">⚙</button><button id="stelle-close" type="button" aria-label="收起聊天">−</button></header>
    <form id="stelle-settings" hidden>
-    <div id="stelle-byok"><label>服务商<select id="stelle-provider"><option value="deepseek">DeepSeek</option><option value="qwen">千问（北京地域）</option></select></label><label>模型<input id="stelle-model" value="deepseek-v4-flash" maxlength="80" autocomplete="off"></label><label>你的 API Key<input id="stelle-key" type="password" autocomplete="off" maxlength="512" placeholder="仅在当前页面使用"></label><p class="stelle-note">浏览器直连所选服务商，费用由你的账户承担。密钥不保存，离开页面需重填；对话及相关公开资料会发给该服务商。</p></div>
+    <div id="stelle-byok"><label>服务商<select id="stelle-provider"><option value="deepseek">DeepSeek</option><option value="qwen">千问（北京地域）</option></select></label><label>模型<input id="stelle-model" value="deepseek-v4-flash" maxlength="80" autocomplete="off"></label><label>你的 API Key<input id="stelle-key" type="password" autocomplete="off" maxlength="512" placeholder="填写后连接"></label><label class="stelle-check"><input id="stelle-remember-key" type="checkbox" checked>在本标签页记住 API Key</label><p class="stelle-note">浏览器直连所选服务商，费用由你的账户承担。勾选后密钥保存在本标签页的会话存储中，关闭标签页或清除会话后删除；对话及相关公开资料会发给该服务商。</p></div>
     <label class="stelle-check"><input id="stelle-auto-intro" type="checkbox" checked>切换页面时介绍一下</label>
     <div class="stelle-settings-actions"><button type="submit">连接</button><button id="stelle-clear" type="button">清除会话与凭证</button></div>
    </form>

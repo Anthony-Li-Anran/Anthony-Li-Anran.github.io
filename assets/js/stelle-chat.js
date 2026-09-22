@@ -1,4 +1,4 @@
-/* Text-only conversation UI. Credentials never enter persisted conversation state. */
+/* Text-only conversation UI. Optional credentials stay in this tab's session storage. */
 (() => {
   'use strict';
   const root = document.getElementById('live2d-companion');
@@ -8,16 +8,29 @@
   const settings = el('stelle-settings'), status = el('stelle-status'), intro = el('stelle-intro');
   const store = {
     read(key, fallback) { try { return JSON.parse(sessionStorage.getItem('stelle-' + key)) ?? fallback; } catch (_) { return fallback; } },
-    write(key, value) { try { sessionStorage.setItem('stelle-' + key, JSON.stringify(value)); } catch (_) { /* optional */ } }
+    write(key, value) { try { sessionStorage.setItem('stelle-' + key, JSON.stringify(value)); return true; } catch (_) { return false; } },
+    remove(key) { try { sessionStorage.removeItem('stelle-' + key); } catch (_) { /* optional */ } }
   };
   const savedHistory = store.read('history', []);
   let history = (Array.isArray(savedHistory) ? savedHistory : []).filter(x => x && ['user','assistant'].includes(x.role) && typeof x.content === 'string').slice(-16);
   // Retire old invitation credentials; this build has no owner-funded route.
   try { sessionStorage.removeItem('stelle-invite-token'); } catch (_) { /* optional */ }
-  let credential = null;
+  const validCredential = value => value && Object.hasOwn(window.StelleDirect.providers,value.provider) &&
+    typeof value.model === 'string' && /^[A-Za-z0-9._:/-]{1,80}$/.test(value.model) &&
+    typeof value.key === 'string' && value.key.length >= 8 && value.key.length <= 512 && !/[\r\n]/.test(value.key);
+  const remembered = store.read('credential',null);
+  let credential = validCredential(remembered) ? remembered : null;
   let controller = null, busy = false, introTimer, generation = 0;
   const savedMemes = store.read('memes', []);
   let usedMemes = (Array.isArray(savedMemes) ? savedMemes : []).filter(x => typeof x === 'string').slice(-8);
+  const rememberKey = el('stelle-remember-key');
+  rememberKey.checked = store.read('remember-key',true) !== false;
+  if (!rememberKey.checked) store.remove('credential');
+  if (credential) {
+    el('stelle-provider').value = credential.provider;
+    el('stelle-model').value = credential.model;
+    status.textContent = '浏览器直连 · 本标签页已连接';
+  }
   const perform = (expression = 'Neutral', motion = 'none') => root.dispatchEvent(new CustomEvent('stelle:perform', {detail:{expression,motion}}));
   function add(role, text) {
     const node = document.createElement('div'); node.className = 'stelle-message'; node.dataset.role = role;
@@ -43,22 +56,31 @@
   el('stelle-intro-close').addEventListener('click', () => { intro.hidden = true; });
   el('stelle-settings-toggle').addEventListener('click', () => showSettings(settings.hidden));
   el('stelle-provider').addEventListener('change', () => { el('stelle-model').value = el('stelle-provider').value === 'qwen' ? 'qwen-plus' : 'deepseek-v4-flash'; });
+  rememberKey.addEventListener('change', () => {
+    store.write('remember-key',rememberKey.checked);
+    if (rememberKey.checked && credential) store.write('credential',credential);
+    else store.remove('credential');
+  });
   settings.addEventListener('submit', async event => {
     event.preventDefault(); if (busy) return;
     const button = settings.querySelector('[type=submit]'); button.disabled = true;
     try {
-      const key = el('stelle-key').value.trim(), model = el('stelle-model').value.trim();
+      const provider = el('stelle-provider').value, model = el('stelle-model').value.trim();
+      const entered = el('stelle-key').value.trim();
+      const key = entered || (credential?.provider === provider ? credential.key : '');
       if (!key || /[\r\n]/.test(key) || !/^[A-Za-z0-9._:/-]{1,80}$/.test(model)) throw new Error('请填写有效的模型名称和 API Key。');
-      credential = {key, model, provider:el('stelle-provider').value};
+      credential = {key, model, provider};
+      store.write('remember-key',rememberKey.checked);
+      if (rememberKey.checked) store.write('credential',credential); else store.remove('credential');
       el('stelle-key').value = '';
-      status.textContent = '浏览器直连 · 发送时验证连接';
+      status.textContent = rememberKey.checked ? '浏览器直连 · 本标签页已记住' : '浏览器直连 · 当前页面已连接';
       showSettings(false); input.focus();
     } catch (error) { status.textContent = error.message; } finally { button.disabled = false; }
   });
   function stop() { controller?.abort(); }
   el('stelle-stop').addEventListener('click', stop);
   el('stelle-clear').addEventListener('click', () => {
-    stop(); generation++; credential = null; history = []; usedMemes = []; save(); log.replaceChildren();
+    stop(); generation++; credential = null; store.remove('credential'); history = []; usedMemes = []; save(); log.replaceChildren();
     el('stelle-key').value = ''; status.textContent = '会话与凭证已清除';
   });
   async function send(text) {
@@ -121,11 +143,12 @@
   el('stelle-suggestions').addEventListener('click', event => { const button = event.target.closest('[data-prompt]'); if (button) send(button.dataset.prompt); });
   root.addEventListener('keydown', event => { if (event.key === 'Escape' && !chat.hidden) close(); });
   root.addEventListener('stelle:hide', () => { stop(); chat.hidden = true; intro.hidden = true; el('live2d-greet').setAttribute('aria-expanded','false'); });
-  window.addEventListener('pagehide', () => { stop(); credential = null; el('stelle-key').value = ''; });
+  window.addEventListener('pagehide', () => { stop(); if (!rememberKey.checked) credential = null; el('stelle-key').value = ''; });
   window.addEventListener('pageshow', event => {
     if (!event.persisted) return;
-    credential = null;
-    status.textContent = '在这里，陪你看看。';
+    const saved = store.read('credential',null);
+    credential = validCredential(saved) ? saved : null;
+    status.textContent = credential ? '浏览器直连 · 本标签页已连接' : '在这里，陪你看看。';
   });
   const auto = el('stelle-auto-intro'); auto.checked = store.read('auto',true);
   auto.addEventListener('change', () => { store.write('auto',auto.checked); if (!auto.checked) intro.hidden = true; });
