@@ -15,7 +15,7 @@ Gradient descent is a first-order iterative optimization algorithm used to find 
 
 Imagine you are at the top of a mountain and want to walk to the lowest point in the valley, but heavy fog obscures the full view. You can only feel the slope (gradient) under your feet, then step forward along the steepest downhill direction until you reach the valley bottom.
 
-![Gradient Descent Visualization](/images/2026_3_6-figure1.png)
+![Gradient Descent Visualization](../images/2026_3_6-figure1.png)
 
 ## 2. Mathematical Principles
 
@@ -65,7 +65,7 @@ $$
 \theta := \theta - \alpha \nabla J(\theta)
 $$
 
-![Gradient Vector Visualization](/images/2026_3_6-figure2.png)
+![Gradient Vector Visualization](../images/2026_3_6-figure2.png)
 
 ## 3. Learning Rate Selection
 
@@ -80,7 +80,7 @@ The learning rate $\alpha$ is the most important hyperparameter in gradient desc
 | Too large ($\alpha \approx 0.5$) | Step size too large | Oscillation near optimal solution |
 | Excessive ($\alpha > 1$) | Extremely large step size | Divergence, unable to converge |
 
-![Learning Rate Impact](/images/2026_3_6-figure3.png)
+![Learning Rate Impact](../images/2026_3_6-figure3.png)
 
 ### 3.2 Learning Rate Scheduling Strategies
 
@@ -145,7 +145,7 @@ Where $b$ is the batch size.
 - ✅ Can leverage matrix operations for acceleration (vectorization)
 - ✅ Standard choice for modern deep learning frameworks
 
-![Gradient Descent Variants](/images/2026_3_6-figure4.png)
+![Gradient Descent Variants](../images/2026_3_6-figure4.png)
 
 ## 5. Challenges Faced by Gradient Descent
 
@@ -181,7 +181,7 @@ At the origin $(0, 0)$:
 - Momentum method
 - Adaptive learning rate methods (Adam, RMSprop)
 
-![Saddle Point Visualization](/images/2026_3_6-figure5.png)
+![Saddle Point Visualization](../images/2026_3_6-figure5.png)
 
 ### 5.3 Feature Scaling
 
@@ -206,7 +206,7 @@ $$
 - Gradient descent path is more direct
 - Accelerates convergence speed
 
-![Feature Scaling Effect](/images/2026_3_6-figure6.png)
+![Feature Scaling Effect](../images/2026_3_6-figure6.png)
 
 ## 6. Advanced Optimization Algorithms
 

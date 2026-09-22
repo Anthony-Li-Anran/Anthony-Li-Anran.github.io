@@ -4,194 +4,185 @@ collection: learning
 permalink: /learning/2026-09-07-linear-model
 excerpt: 'Understanding the classical linear model from a statistical perspective'
 date: 2026-09-07
-tags: [linear-model, statistics, least-squares, regression]
+tags: [linear-model, statistics, least-squares, regression, 机器学习]
 ---
 
-## 1. Overview of Linear Models
+## 1. The Linear Model: Idea and Motivation
 
-A linear model captures the relationship between a response variable $Y$ and one or more predictor variables $X$ by assuming a linear structure. In its simplest form -- simple linear regression:
+### 1.1 Deterministic vs Statistical Relationships
 
-$$
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i
-$$
+Relationships between variables fall into two categories. A **deterministic relationship** is one where the response can be expressed as an exact mathematical function of the predictors — no randomness involved. For example, given a circle's radius $r$, its area $A = \pi r^2$ is perfectly determined: knowing $r$ gives $A$ without error.
 
-Here $\beta_0$ is the intercept, $\beta_1$ is the slope, and $\varepsilon_i$ is the random error term. The goal is to estimate $\beta_0$ and $\beta_1$ from observed data. The classical approach is **ordinary least squares** (OLS): choose the line that minimizes the sum of squared vertical distances from the data points to the line. OLS yields closed-form estimators, and under the Gauss-Markov assumptions it is the **best linear unbiased estimator** (BLUE).
-
-The strength of the linear model lies in its **interpretability**: every parameter carries a clear meaning, and the framework supports rigorous inference -- hypothesis tests, confidence intervals, and beyond. It is not merely a prediction tool, but the foundation of statistical modeling.
-
-## 2. Deterministic Relationship vs Statistical Relationship
-
-First of all, we are going to distinguish between two types of relationships, deterministic relationship & statistical relationship. For deterministic relationship, one of the variables can be expressed as an exact mathematical function of the others -- there is no randomness involved. For example, given the radius $r$ of a circle, its area $A = \pi r^2$ is perfectly determined; or in physics, the distance $d$ traveled by an object moving at constant speed $v$ over time $t$ is exactly $d = vt$. In a deterministic world, knowing the predictors gives you the response without error.
-
-A **statistical relationship**, by contrast, is one where the response is not perfectly predictable from the predictors. The observed values scatter around some underlying trend, and the deviations are captured by a random error term. This is precisely the kind of relationship that linear models are designed to handle:
+A **statistical relationship**, by contrast, is one where the response is not perfectly predictable. Observed values scatter around an underlying trend, and the deviations are captured by a random error term:
 
 $$
 Y = f(X) + \varepsilon
 $$
 
-where $f(X)$ represents the systematic component (e.g., $\beta_0 + \beta_1 X$) and $\varepsilon$ represents the random, unpredictable part. In most real-world problems -- from economics to biology to engineering -- relationships are statistical rather than deterministic. Measurement error, omitted variables, and inherent variability all contribute to the randomness.
+$f(X)$ is the systematic component (e.g. $\beta_0 + \beta_1 X$), and $\varepsilon$ is the random component. Measurement error, omitted variables, and inherent variability all contribute to this randomness.
 
-In other words, it is the statistical relationship -- not the deterministic one -- that constitutes the object of study for linear models. This distinction is fundamental because it motivates why we need *inference* (not just calculation): we estimate parameters, quantify uncertainty, and make probabilistic statements rather than exact predictions.
+This distinction is fundamental because it shifts the goal from exact calculation to **inference** — estimating parameters, quantifying uncertainty, and making probabilistic statements.
 
+### 1.2 Identifying Statistical Relationships: The Scatterplot
 
-## 3. Identifying a Statistical Relationship
-
-How do we know we are looking at a statistical relationship? The most direct tool is the **scatterplot**. Given paired observations $(X_i, Y_i)$, we plot each point and inspect the pattern.
+The most direct tool for detecting a statistical relationship is the **scatterplot**.
 
 ![Statistical vs Deterministic Relationship](../images/2026_9_7-scatter.png)
 
-Three telltale signs of a statistical relationship in a scatterplot:
+Three telltale signs:
 
-- **A visible trend** — as $X$ increases, $Y$ tends to increase (or decrease) systematically, suggesting a functional component $f(X)$.
-- **Spread around the trend** — points deviate from any single line or curve; this is the signature of $\varepsilon$, the random error.
-- **No perfect fit** — unlike the deterministic case on the right, no smooth function passes through all the points exactly.
+- **A visible trend** — as $X$ increases, $Y$ tends to increase or decrease systematically, suggesting $f(X)$
+- **Spread around the trend** — points deviate from any single curve; the signature of $\varepsilon$
+- **No perfect fit** — no smooth function passes through all points exactly
 
 Once a statistical relationship is visually confirmed, the next step is to model it — and the linear model is the natural starting point.
 
+### 1.3 The Simple Linear Regression Model
 
-## 4. The Simple Linear Regression Model
-
-Having identified a statistical relationship visually, we now formalize it mathematically. The **simple linear regression model** assumes:
-
-$$
-Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, 2, \dots, n
-$$
-
-Each component carries a distinct meaning:
-
-- $Y_i$ — the **response** (or dependent variable) for the $i$-th observation.
-- $X_i$ — the **predictor** (or independent variable) for the $i$-th observation. In simple regression there is only one predictor.
-- $\beta_0$ — the **intercept**: the expected value of $Y$ when $X = 0$. It anchors the line vertically.
-- $\beta_1$ — the **slope**: the expected change in $Y$ for a one-unit increase in $X$. It captures the strength and direction of the linear association.
-- $\varepsilon_i$ — the **random error term**: everything that affects $Y_i$ beyond the linear function of $X_i$. It absorbs measurement error, omitted variables, and inherent variability.
-
-The model decomposes each observation into two parts:
+Formalizing the above, the **simple linear regression model** assumes:
 
 $$
-Y_i = \underbrace{\beta_0 + \beta_1 X_i}_{\text{systematic}} + \underbrace{\varepsilon_i}_{\text{random}}
+Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i, \quad i = 1, \dots, n
 $$
 
-The systematic part $\beta_0 + \beta_1 X_i$ is the *signal* we wish to recover; the random part $\varepsilon_i$ is the *noise* we must contend with. Parameters $\beta_0$ and $\beta_1$ are unknown population quantities — our task is to estimate them from a sample of $n$ paired observations $(X_1, Y_1), \dots, (X_n, Y_n)$.
+Component meanings:
 
-## 5. Ordinary Least Squares Estimation
+- $\beta_0$ (**intercept**): the expected value of $Y$ when $X = 0$; anchors the line vertically
+- $\beta_1$ (**slope**): the expected change in $Y$ for a one-unit increase in $X$; captures the strength and direction of the linear association
+- $\varepsilon_i$ (**random error**): everything affecting $Y_i$ beyond the linear function of $X_i$ — measurement error, omitted variables, inherent variability
 
-### 5.1 The Principle
+$\beta_0 + \beta_1 X_i$ is the **systematic component** (the explained part); $\varepsilon_i$ is the **stochastic component** (the unexplained part). The statistical problem: given $n$ pairs of observations $(X_i, Y_i)$, estimate $\beta_0$ and $\beta_1$.
 
-Given $n$ data points, infinitely many lines could be drawn through the scatter. We need a criterion to choose among them. **Ordinary least squares** (OLS) selects the line that minimizes the sum of squared residuals:
+## 2. Ordinary Least Squares Estimation
+
+### 2.1 The OLS Principle and Scalar Derivation
+
+**Ordinary least squares** (OLS) chooses the line that minimizes the sum of squared vertical distances:
 
 $$
 \hat{\beta}_0, \hat{\beta}_1 = \arg\min_{\beta_0, \beta_1} \sum_{i=1}^n \bigl(Y_i - \beta_0 - \beta_1 X_i\bigr)^2
 $$
 
-Define the residual for the $i$-th observation as $e_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i$ — the vertical distance from the observed point to the fitted line. OLS minimizes $\sum_{i=1}^n e_i^2$.
+Define the residual $e_i = Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i$. OLS minimizes $\sum e_i^2$.
 
-Why *squared* residuals rather than absolute values? Three reasons: (1) squares are differentiable everywhere, yielding clean closed-form solutions; (2) squaring penalizes large deviations more heavily, pulling the line toward outliers in a controlled way; (3) under the Gauss-Markov assumptions (Section 6), OLS delivers optimal statistical properties.
+Why squares rather than absolute values? Three reasons: (1) squares are differentiable everywhere, yielding clean closed-form solutions; (2) squaring penalizes large deviations more heavily; (3) under the Gauss-Markov assumptions (Section 3), OLS delivers optimal statistical properties.
 
-### 5.2 Deriving the Estimators
+Let $Q(\beta_0, \beta_1) = \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2$. Differentiating:
 
-Let $Q(\beta_0, \beta_1) = \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2$. To find the minimizer, set partial derivatives to zero.
-
-**Step 1: Derivative with respect to $\beta_0$.**
+**With respect to $\beta_0$:**
 
 $$
 \frac{\partial Q}{\partial \beta_0} = -2 \sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i) = 0
+\;\Longrightarrow\;
+\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X} \tag{1}
 $$
 
-Dividing by $-2$ and rearranging:
+The fitted line **always passes through the centroid** $(\bar{X}, \bar{Y})$.
 
-$$
-\sum_{i=1}^n Y_i - n\beta_0 - \beta_1 \sum_{i=1}^n X_i = 0
-$$
-
-Let $\bar{Y} = \frac{1}{n}\sum Y_i$ and $\bar{X} = \frac{1}{n}\sum X_i$. Then:
-
-$$
-n\bar{Y} - n\beta_0 - n\beta_1 \bar{X} = 0 \quad\Rightarrow\quad \hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X} \tag{1}
-$$
-
-This tells us the fitted line passes through the centroid of the data, $(\bar{X}, \bar{Y})$.
-
-**Step 2: Derivative with respect to $\beta_1$.**
+**With respect to $\beta_1$:**
 
 $$
 \frac{\partial Q}{\partial \beta_1} = -2 \sum_{i=1}^n X_i (Y_i - \beta_0 - \beta_1 X_i) = 0
 $$
 
-Dividing by $-2$:
+Substituting (1) and rearranging, with $S_{XX} = \sum (X_i - \bar{X})^2$ and $S_{XY} = \sum (X_i - \bar{X})(Y_i - \bar{Y})$:
 
 $$
-\sum_{i=1}^n X_i Y_i - \beta_0 \sum_{i=1}^n X_i - \beta_1 \sum_{i=1}^n X_i^2 = 0
-$$
-
-Substitute $\beta_0$ from (1): $\beta_0 = \bar{Y} - \beta_1 \bar{X}$:
-
-$$
-\sum_{i=1}^n X_i Y_i - (\bar{Y} - \beta_1 \bar{X}) n\bar{X} - \beta_1 \sum_{i=1}^n X_i^2 = 0
-$$
-
-$$
-\sum_{i=1}^n X_i Y_i - n\bar{X}\bar{Y} + \beta_1 n\bar{X}^2 - \beta_1 \sum_{i=1}^n X_i^2 = 0
-$$
-
-Group the $\beta_1$ terms:
-
-$$
-\beta_1 \left( \sum_{i=1}^n X_i^2 - n\bar{X}^2 \right) = \sum_{i=1}^n X_i Y_i - n\bar{X}\bar{Y}
-$$
-
-Recognize the sums of squares and cross-products:
-
-$$
-S_{XX} = \sum_{i=1}^n (X_i - \bar{X})^2 = \sum_{i=1}^n X_i^2 - n\bar{X}^2
-$$
-
-$$
-S_{XY} = \sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y}) = \sum_{i=1}^n X_i Y_i - n\bar{X}\bar{Y}
-$$
-
-Thus:
-
-$$
-\boxed{\hat{\beta}_1 = \frac{S_{XY}}{S_{XX}} = \frac{\sum_{i=1}^n (X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n (X_i - \bar{X})^2}} \tag{2}
+\boxed{\hat{\beta}_1 = \frac{S_{XY}}{S_{XX}} = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2}} \tag{2}
 $$
 
 ![OLS: Residuals and Centroid](../images/2026_9_7-ols.png)
 
-Together, (1) and (2) are the **OLS estimators**. They are functions of the data alone — no unknown parameters remain.
+(1) and (2) are the **OLS estimators** — functions of data alone, no unknown parameters.
 
-### 5.3
-
-### 5.3 An Alternative Expression
-
-The slope estimator can also be written in terms of the sample correlation $r_{XY}$:
+Equivalently, in terms of the sample correlation $r_{XY}$:
 
 $$
 \hat{\beta}_1 = r_{XY} \cdot \frac{s_Y}{s_X}
 $$
 
-where $s_X$ and $s_Y$ are the sample standard deviations of $X$ and $Y$. This form makes the interpretation transparent: the estimated slope is the correlation scaled by the ratio of variabilities. If $X$ and $Y$ are perfectly correlated ($r_{XY} = \pm 1$), then $\hat{\beta}_1$ is simply $\pm s_Y / s_X$.
+The estimated slope is the correlation scaled by the ratio of variabilities.
 
+### 2.2 Matrix Form and the Normal Equations
 
-## 6. Properties of the OLS Estimators
+The scalar derivation is elegant but doesn't scale. Rewriting in matrix-vector form:
 
-### 6.1 The Gauss-Markov Assumptions
+$$
+\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
+$$
 
-The OLS formulas derived in Section 5 are purely algebraic — they minimize $\sum e_i^2$ regardless of any probabilistic model. To understand *why* OLS is a good estimator, we specify a data-generating process:
+where $\mathbf{y} \in \mathbb{R}^n$, the design matrix $\mathbf{X} \in \mathbb{R}^{n \times (p+1)}$ has a leading column of 1s for the intercept, and $\boldsymbol{\beta} \in \mathbb{R}^{p+1}$. The residual sum of squares becomes the squared $\ell_2$-norm:
 
-1. **Linearity**: $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$.
-2. **Strict exogeneity**: $\mathbb{E}[\varepsilon_i \mid X] = 0$.
-3. **Homoskedasticity**: $\operatorname{Var}(\varepsilon_i \mid X) = \sigma^2$ for all $i$.
-4. **No autocorrelation**: $\operatorname{Cov}(\varepsilon_i, \varepsilon_j \mid X) = 0$ for $i \neq j$.
-5. **No perfect collinearity**: the $X_i$ are not all identical ($S_{XX} > 0$).
+$$
+\text{RSS}(\boldsymbol{\beta}) = \|\mathbf{y} - \mathbf{X}\boldsymbol{\beta}\|_2^2 = (\mathbf{y} - \mathbf{X}\boldsymbol{\beta})^\top (\mathbf{y} - \mathbf{X}\boldsymbol{\beta})
+$$
+
+Differentiating and setting to zero:
+
+$$
+\frac{\partial\,\text{RSS}}{\partial\boldsymbol{\beta}} = -2\mathbf{X}^\top(\mathbf{y} - \mathbf{X}\boldsymbol{\beta}) = \mathbf{0}
+\;\Longrightarrow\;
+\boxed{\mathbf{X}^\top\!\mathbf{X}\,\hat{\boldsymbol{\beta}} = \mathbf{X}^\top\mathbf{y}}
+$$
+
+These are the **normal equations**. When $\mathbf{X}^\top\!\mathbf{X}$ is invertible (columns of $\mathbf{X}$ are linearly independent — no perfect multicollinearity), the closed-form solution is:
+
+$$
+\boxed{\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\!\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}} \tag{3}
+$$
+
+For simple regression ($p=1$), expanding (3) reproduces the scalar estimators exactly. But the real power of this form is generality: it holds for any number of predictors, serving as the unified algebraic framework behind multiple regression, polynomial regression, and basis expansions.
+
+### 2.3 Gradient Descent: An Iterative Alternative
+
+The closed form requires inverting $\mathbf{X}^\top\!\mathbf{X}$ at a cost of $O(p^3)$. When $p$ is large — millions of features in genomics or text modelling — this is prohibitive. **Gradient descent** offers an alternative.
+
+Starting from an initial guess $\boldsymbol{\beta}^{(0)}$ (often zeros), repeatedly step downhill:
+
+$$
+\boldsymbol{\beta}^{(t+1)} = \boldsymbol{\beta}^{(t)} - \alpha \nabla \text{RSS}(\boldsymbol{\beta}^{(t)})
+$$
+
+where the learning rate $\alpha > 0$ controls step size, and $\nabla \text{RSS} = -2\mathbf{X}^\top(\mathbf{y} - \mathbf{X}\boldsymbol{\beta})$.
+
+![Mini-batch SGD Animation](../images/2026_9_18-gd.gif)
+
+Two practical variants:
+
+- **Batch Gradient Descent**: computes the gradient over all $n$ observations. Converges smoothly but is expensive per iteration for large $n$
+- **Stochastic Gradient Descent (SGD)**: uses a single observation (or a small mini-batch) per step, trading gradient accuracy for speed. This noisy-but-cheap update is the foundation of modern deep-learning optimisation
+
+The choice between closed-form and gradient descent:
+
+| | Closed-Form $(\mathbf{X}^\top\!\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}$ | Gradient Descent |
+|---|---|---|
+| **Cost** | $O(np^2 + p^3)$, one-time | $O(np)$ per iteration |
+| **Large $p$** | Intractable | Works |
+| **Large $n$** | Fine | Use SGD |
+| **Exact** | Yes | Approximate |
+| **Requires invertibility** | Yes (or regularise) | No |
+| **Extensible** | Limited | Naturally extends to Lasso, Ridge, neural nets |
+
+In classical statistics with modest $p$, the closed form is preferred — exact and directly tied to inference. In machine learning with large $p$, or when the linear model sits inside a larger optimisation pipeline, gradient descent is the default. Both arrive at the same $\hat{\boldsymbol{\beta}}$; only the path differs.
+
+## 3. Statistical Properties of OLS
+
+### 3.1 Gauss-Markov: Assumptions and BLUE
+
+The OLS formulas in Section 2 are purely algebraic — they minimize $\sum e_i^2$ without any probabilistic model. To understand *why* OLS is a good estimator, we specify a data-generating process. The **Gauss-Markov assumptions**:
+
+1. **Linearity**: $Y_i = \beta_0 + \beta_1 X_i + \varepsilon_i$
+2. **Strict exogeneity**: $\mathbb{E}[\varepsilon_i \mid X] = 0$
+3. **Homoskedasticity**: $\operatorname{Var}(\varepsilon_i \mid X) = \sigma^2$ for all $i$
+4. **No autocorrelation**: $\operatorname{Cov}(\varepsilon_i, \varepsilon_j \mid X) = 0$ for $i \neq j$
+5. **No perfect collinearity**: the $X_i$ are not all identical ($S_{XX} > 0$)
 
 Note that **normality is not required** — only the first two moments matter.
 
-### 6.2 The Gauss-Markov Theorem
+Under these assumptions, $\hat{\beta}_0$ and $\hat{\beta}_1$ are the **Best Linear Unbiased Estimators** (BLUE):
 
-Under assumptions 1–5, $\hat{\beta}_0$ and $\hat{\beta}_1$ are the **Best Linear Unbiased Estimators** (BLUE):
-
-- **Linear**: $\hat{\beta}_1 = \sum c_i Y_i$ with $c_i = (X_i - \bar{X})/S_{XX}$. The theorem only compares OLS to estimators of this linear form.
-- **Unbiased**: $\mathbb{E}[\hat{\beta}_1] = \beta_1$. A direct proof: $\mathbb{E}[\hat{\beta}_1] = \sum c_i \mathbb{E}[Y_i] = \sum c_i(\beta_0 + \beta_1 X_i) = \beta_1$, using $\sum c_i = 0$ and $\sum c_i X_i = 1$.
+- **Linear**: $\hat{\beta}_1 = \sum c_i Y_i$ with $c_i = (X_i - \bar{X})/S_{XX}$. The theorem only compares OLS to estimators of this linear-in-$Y$ form
+- **Unbiased**: $\mathbb{E}[\hat{\beta}_1] = \beta_1$. Direct proof: $\mathbb{E}[\hat{\beta}_1] = \sum c_i \mathbb{E}[Y_i] = \sum c_i(\beta_0 + \beta_1 X_i) = \beta_1$, using $\sum c_i = 0$ and $\sum c_i X_i = 1$
 - **Best** (minimum variance): for any other linear unbiased estimator $\tilde{\beta}_1$, $\operatorname{Var}(\hat{\beta}_1) \leq \operatorname{Var}(\tilde{\beta}_1)$. The OLS variance is
 
   $$
@@ -200,17 +191,17 @@ Under assumptions 1–5, $\hat{\beta}_0$ and $\hat{\beta}_1$ are the **Best Line
 
   which decreases as $X$ spreads wider or $\sigma^2$ shrinks — both under the researcher's control through study design.
 
-The theorem gives OLS a firm theoretical footing with minimal assumptions. But it also has boundaries: biased estimators like ridge regression can beat OLS on mean squared error when predictors are highly correlated.
+The theorem gives OLS firm theoretical footing with minimal assumptions. But it has boundaries: biased estimators like ridge regression can beat OLS on mean squared error when predictors are highly correlated.
 
-### 6.3 Connection to Maximum Likelihood: OLS = MLE
+### 3.2 Maximum Likelihood Perspective
 
-If we strengthen the assumptions by adding **normality**,
+If we strengthen the assumptions with **normality**:
 
 $$
 \varepsilon_i \mid X \stackrel{\text{i.i.d.}}{\sim} N(0, \sigma^2)
 $$
 
-then $Y_i \mid X_i \sim N(\beta_0 + \beta_1 X_i, \sigma^2)$ and the log-likelihood is
+then $Y_i \mid X_i \sim N(\beta_0 + \beta_1 X_i, \sigma^2)$, and the log-likelihood is:
 
 $$
 \ell(\beta_0, \beta_1, \sigma^2) = -\frac{n}{2}\ln(2\pi) - \frac{n}{2}\ln(\sigma^2) - \frac{1}{2\sigma^2}\sum_{i=1}^n (Y_i - \beta_0 - \beta_1 X_i)^2
@@ -222,22 +213,73 @@ $$
 \boxed{\hat{\beta}_0^{\text{MLE}} = \hat{\beta}_0^{\text{OLS}}, \qquad \hat{\beta}_1^{\text{MLE}} = \hat{\beta}_1^{\text{OLS}}}
 $$
 
-OLS requires no distributional assumption to be BLUE; adding normality reveals it is also the maximum likelihood estimator. The two frameworks converge on the same answer.
+OLS needs no distributional assumption to be BLUE; adding normality reveals it is also the MLE. The two frameworks converge on the same answer.
 
-As a corollary, the geometric property $\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1\bar{X}$ (from Section 5.2) means the fitted line **always passes through the centroid** $(\bar{X}, \bar{Y})$ — true under both OLS and MLE.
-
-### 6.4 Estimation of $\sigma^2$
-
-Setting $\partial \ell / \partial \sigma^2 = 0$ gives the MLE of the error variance:
+For $\sigma^2$, setting $\partial \ell / \partial \sigma^2 = 0$ gives the MLE:
 
 $$
 \hat{\sigma}^2_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n (Y_i - \hat{\beta}_0 - \hat{\beta}_1 X_i)^2 = \frac{\text{RSS}}{n}
 $$
 
-But this estimator is **biased downward**: $\mathbb{E}[\hat{\sigma}^2_{\text{MLE}}] = \frac{n-2}{n}\sigma^2 < \sigma^2$. The bias comes from using estimated parameters in the residuals — fitting two parameters consumes two degrees of freedom. The standard correction is the **unbiased estimator**:
+But this estimator is **biased downward**: $\mathbb{E}[\hat{\sigma}^2_{\text{MLE}}] = \frac{n-2}{n}\sigma^2 < \sigma^2$. The bias arises because fitting two parameters consumes two degrees of freedom. The standard correction is the **unbiased estimator**:
 
 $$
 \boxed{\hat{\sigma}^2 = \frac{\text{RSS}}{n-2}}
 $$
 
-This is the familiar Mean Squared Error (MSE). It is a useful reminder: MLE gives unbiased $\hat{\beta}$ but a biased $\hat{\sigma}^2$ — MLE asymptotic optimality does not guarantee finite-sample unbiasedness.
+This is the familiar Mean Squared Error (MSE). A useful reminder: MLE gives unbiased $\hat{\beta}$ but biased $\hat{\sigma}^2$ — asymptotic optimality does not guarantee finite-sample unbiasedness.
+
+## 4. Multiple Linear Regression
+
+### 4.1 From Simple to Multiple
+
+Simple regression assumes a single predictor captures all systematic variation. In practice, outcomes are rarely driven by one factor. Predicting house prices requires area, location, age, and more. Ignoring relevant predictors does not leave them harmless — it embeds them in the error term, where they bias $\hat{\beta}_1$ if correlated with $X_1$ (**omitted variable bias**).
+
+The natural extension is the **multiple linear regression model**:
+
+$$
+Y_i = \beta_0 + \beta_1 X_{i1} + \beta_2 X_{i2} + \cdots + \beta_p X_{ip} + \varepsilon_i
+$$
+
+or in matrix form, $\mathbf{y} = \mathbf{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}$, where $\mathbf{X}$ now has $p+1$ columns (a leading column of 1s plus $p$ predictors) and $\boldsymbol{\beta} \in \mathbb{R}^{p+1}$.
+
+The interpretation of each coefficient is the crux of multiple regression:
+
+> $\beta_j$ is the expected change in $Y$ for a one-unit increase in $X_j$, **holding all other predictors constant** (ceteris paribus).
+
+This is fundamentally different from simple regression. In simple regression, $\hat{\beta}_1$ absorbs both the direct effect of $X_1$ and any indirect effect operating through correlated omitted variables. In multiple regression, the OLS estimate $\hat{\beta}_j$ *partials out* the influence of other predictors — it isolates the unique contribution of $X_j$. Geometrically, simple regression projects $Y$ onto a line; multiple regression projects $Y$ onto a $p$-dimensional hyperplane.
+
+![Multiple Regression: Fitted Plane](../images/2026_9_21-ols-plane.png)
+
+### 4.2 Estimation and the Hat Matrix
+
+The OLS estimator retains the same closed form from Section 2.2 — $\hat{\boldsymbol{\beta}} = (\mathbf{X}^\top\!\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y}$ — now with $\mathbf{X} \in \mathbb{R}^{n \times (p+1)}$. No new derivation is needed; the matrix algebra is identical. What changes is the geometric interpretation, which becomes richer with multiple dimensions.
+
+For observation $i$, the **fitted value** and **residual** are:
+
+$$
+\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_{i1} + \hat{\beta}_2 X_{i2} + \cdots + \hat{\beta}_p X_{ip}, \qquad
+e_i = Y_i - \hat{Y}_i
+$$
+
+The residual sum of squares generalizes naturally: $\text{RSS} = \sum_{i=1}^n e_i^2 = \sum_{i=1}^n (Y_i - \hat{Y}_i)^2$.
+
+Stacking all observations, these become matrix expressions. Define the **fitted values** and **residuals** in vector form:
+
+$$
+\hat{\mathbf{y}} = \mathbf{X}\hat{\boldsymbol{\beta}} = \mathbf{X}(\mathbf{X}^\top\!\mathbf{X})^{-1}\mathbf{X}^\top\mathbf{y} = \mathbf{H}\mathbf{y}
+$$
+
+$$
+\mathbf{e} = \mathbf{y} - \hat{\mathbf{y}} = (\mathbf{I} - \mathbf{H})\mathbf{y}
+$$
+
+The matrix $\mathbf{H} = \mathbf{X}(\mathbf{X}^\top\!\mathbf{X})^{-1}\mathbf{X}^\top$ is the **hat matrix** — so called because it puts the hat on $\mathbf{y}$. It is the central geometric object in linear regression:
+
+- **Symmetric and idempotent**: $\mathbf{H} = \mathbf{H}^\top$, $\mathbf{H}^2 = \mathbf{H}$. Idempotence means applying the projection twice gives the same result — once $\mathbf{y}$ is on the plane, it stays there.
+- **Projects onto $C(\mathbf{X})$**: $\hat{\mathbf{y}} = \mathbf{H}\mathbf{y}$ is the orthogonal projection of $\mathbf{y}$ onto the column space of $\mathbf{X}$ — the $p$-dimensional subspace spanned by the predictors. Among all vectors in $C(\mathbf{X})$, $\hat{\mathbf{y}}$ is the closest to $\mathbf{y}$ in Euclidean distance.
+- **$\mathbf{I} - \mathbf{H}$ projects onto the orthogonal complement**: the residuals $\mathbf{e}$ lie in the subspace orthogonal to $C(\mathbf{X})$. This implies $\mathbf{e} \perp \hat{\mathbf{y}}$ and $\mathbf{X}^\top\mathbf{e} = \mathbf{0}$ — the residuals are orthogonal to every predictor.
+- **The diagonal elements $h_{ii}$ are leverage scores**: $0 \leq h_{ii} \leq 1$ and $\sum_{i=1}^n h_{ii} = \operatorname{tr}(\mathbf{H}) = p+1$. A point's leverage measures how far its predictor vector $\mathbf{x}_i$ lies from the centroid of the data — high-leverage points exert disproportionate influence on the fitted surface. The average leverage is $(p+1)/n$; values above $2(p+1)/n$ are conventionally flagged.
+
+The hat matrix also connects neatly to degrees of freedom: the residuals $\mathbf{e}$ live in an $(n-p-1)$-dimensional subspace, which is why the unbiased variance estimator generalizes to $\hat{\sigma}^2 = \text{RSS}/(n-p-1)$ — exactly $n$ observations minus $p+1$ parameters estimated.
+
