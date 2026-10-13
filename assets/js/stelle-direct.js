@@ -12,7 +12,7 @@ updates recent 时据记录回答；no_recent_relevant 时说明没有近期更�
 网站回答区分原文与补充解释，资料 unavailable 时坦诚说明。默认不剧透、不编造游戏台词；原创玩笑不能冒充官方台词。不重复最近使用过的梗。
 通常回答2至4句，技术问题可更详细。只输出一个 JSON 对象，不用代码围栏或附加说明：
 {"segments":[{"text":"一句自然的回答","expression":"Smile","motion":"nod","meme_id":null}]}
-expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、SoftEyes；motion 只能是 none、nod、tilt。默认 Neutral/none，表演克制。用候选梗时填对应 meme_id，否则 null。不要输出推理过程。`;
+expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、SoftEyes、Shy、Question；motion 只能是 none、nod、tilt。默认 Neutral/none，表演克制。结合上下文判断情绪：访客直接夸你可爱或漂亮时先 Shy，再用 Shy 或 Smile 回答；感谢用 Smile；认真分析用 Thinking。不要把夸第三者、否定或引用当作夸你，不要每句话都点头或切表情。用候选梗时填对应 meme_id，否则 null。不要输出推理过程。`;
   function terms(text) {
     return new Set((String(text).toLowerCase().match(/[a-z0-9_]{2,}|[\u4e00-\u9fff]+/g)||[]).flatMap(w=>/^[\x00-\x7f]+$/.test(w)||w.length<2?[w]:Array.from({length:w.length-1},(_,i)=>w.slice(i,i+2))));
   }
@@ -57,7 +57,7 @@ expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、Soft
   function sentence(line,allowed) {
     const row=typeof line==='string'?JSON.parse(line):line;
     if(!row || typeof row.text!=='string' || !row.text.length || row.text.length>4000) throw Error('模型的回答格式不完整，请重试。');
-    return {text:row.text,expression:['Neutral','Smile','Happy','Thinking','Sad','Surprised','SoftEyes'].includes(row.expression)?row.expression:'Neutral',motion:['none','nod','tilt'].includes(row.motion)?row.motion:'none',meme_id:allowed.has(row.meme_id)?row.meme_id:null};
+    return {text:row.text,expression:['Neutral','Smile','Happy','Thinking','Sad','Surprised','SoftEyes','Shy','Question'].includes(row.expression)?row.expression:'Neutral',motion:['none','nod','tilt'].includes(row.motion)?row.motion:'none',meme_id:allowed.has(row.meme_id)?row.meme_id:null};
   }
   function parseReply(raw,allowed) {
     const cleaned=String(raw||'').trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
@@ -96,6 +96,43 @@ expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、Soft
     }
     return rows.slice(0,12);
   }
+  // Emit complete JSON segments as soon as they arrive; keep forgiving fallback
+  // parsing for providers that return plain text or a truncated final answer.
+  function replyStream(allowed) {
+    let raw='', scanned=0, quoted=false, escaped=false, count=0;
+    const objects=[];
+    function events(row) {
+      return [{type:'performance',expression:row.expression,motion:row.motion},
+        {type:'text',text:row.text+'\n'}, ...(row.meme_id?[{type:'memes',ids:[row.meme_id]}]:[])];
+    }
+    return {
+      push(delta) {
+        raw += delta;
+        if(raw.length>12000) throw Error('回答格式异常或过长，请重试。');
+        const output=[];
+        for(;scanned<raw.length;scanned++) {
+          const ch=raw[scanned];
+          if(quoted) {if(escaped) escaped=false; else if(ch==='\\') escaped=true; else if(ch==='"') quoted=false; continue;}
+          if(ch==='"') {quoted=true;continue;}
+          if(ch==='{') objects.push(scanned);
+          if(ch==='}' && objects.length) {
+            const start=objects.pop();
+            try {
+              const object=JSON.parse(raw.slice(start,scanned+1));
+              if(typeof object.text==='string' && count<12) { const row=sentence(object,allowed);count++;output.push(...events(row)); }
+            } catch(_) { /* Wait for a valid segment or the final fallback. */ }
+          }
+        }
+        return output;
+      },
+      finish() {
+        if(count) return [];
+        const rows=parseReply(raw,allowed);count=rows.length;
+        return rows.flatMap(events);
+      },
+      get count() {return count;}
+    };
+  }
   async function* stream({credential,message,history,page,usedMemes,knowledgeURL,contextURL,signal}) {
     if(!Object.hasOwn(providers,credential.provider)) throw Error('请选择支持的服务商。');
     const provider=providers[credential.provider];
@@ -114,16 +151,15 @@ expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、Soft
     if(!response.ok) throw Error(({400:'请求被服务商拒绝，请检查模型名称和账户地域。',401:'API Key 无效，请检查连接设置。',402:'服务商账户余额不足。',403:'服务商拒绝了请求，请检查账户权限或地域。',404:'没有找到这个模型，请检查模型名称。',429:'服务商额度不足或请求过于频繁。'})[response.status]||'模型服务暂时不可用，请稍后再试。');
     if(!response.body) throw Error('服务商没有返回可读取的回复。');
     const reader=response.body.getReader(),decoder=new TextDecoder();
-    const allowed=new Set(evidence.memes.map(m=>m.id)),used=new Set();
-    let wire='',buffer='',finished=false,doneEvent=false,total=0;
+    const parser=replyStream(new Set(evidence.memes.map(m=>m.id)));
+    let wire='',finished=false,doneEvent=false,total=0;
     function* consume(payload) {
       if(payload==='[DONE]') {doneEvent=true;return;}
       let event;try {event=JSON.parse(payload);}catch(_){throw Error('服务商返回的数据格式异常。');}
       if(event.error) throw Error('服务商中断了回复，请检查账户状态或重试。');
       for(const choice of event.choices||[]) {
         if(choice.finish_reason==='stop') finished=true;
-        buffer+=choice.delta?.content||'';
-        if(buffer.length>12000) throw Error('回答格式异常或过长，请重试。');
+        yield* parser.push(choice.delta?.content||'');
       }
     }
     try {
@@ -138,19 +174,14 @@ expression 只能是 Neutral、Smile、Happy、Thinking、Sad、Surprised、Soft
         }
         if(done) {if(wire.startsWith('data:')) yield* consume(wire.slice(5).trim());break;}
       }
-      const rows=parseReply(buffer,allowed);
-      for(let index=0;index<rows.length;index++) {
-        const row=rows[index];
-        yield {type:'performance',expression:row.expression,motion:row.motion};yield {type:'text',text:row.text+(index<rows.length-1?'\n':'')};
-        if(row.meme_id) used.add(row.meme_id);
-      }
-      if(!rows.length) throw Error('这次没有收到可读的回答，请再试一次。');
+      yield* parser.finish();
+      if(!parser.count) throw Error('这次没有收到可读的回答，请再试一次。');
       if(!finished) throw Error('回复中断或达到长度限制，已收到的内容为你保留。');
       yield {type:'sources',items:evidence.website.documents.map(d=>({title:d.title,url:d.url}))};
-      yield {type:'memes',ids:[...used]};yield {type:'done'};
+      yield {type:'done'};
     } finally {await reader.cancel().catch(()=>{});reader.releaseLock();}
   }
-  const api={providers,stream,recent,context,sentence,parseReply};
+  const api={persona,providers,stream,recent,context,sentence,parseReply,replyStream};
   if(typeof module!=='undefined' && module.exports) module.exports=api;
   else scope.StelleDirect=api;
 })(globalThis);

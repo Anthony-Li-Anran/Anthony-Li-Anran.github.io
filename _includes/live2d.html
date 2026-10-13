@@ -8,23 +8,32 @@
  <div id="live2d-panel" hidden>
   <div id="stelle-intro" hidden><button type="button" id="stelle-intro-close" aria-label="关闭介绍">×</button><p id="live2d-message" role="status"></p></div>
   <section id="stelle-chat" aria-label="和星聊天" hidden>
-   <header class="stelle-header"><span class="stelle-star" aria-hidden="true">✦</span><div><strong>星</strong><small id="stelle-status" role="status">在这里，陪你看看。</small></div><button id="stelle-settings-toggle" type="button" aria-label="连接与偏好设置" aria-expanded="false">⚙</button><button id="stelle-close" type="button" aria-label="收起聊天">−</button></header>
+   <div class="stelle-mode-control"><span id="stelle-mode-label">沉浸模式</span><label class="stelle-mode-switch"><input id="stelle-classic-mode" type="checkbox" role="switch" aria-label="经典模式"><span aria-hidden="true"></span></label><span class="stelle-mode-alternative">经典</span></div>
+   <header class="stelle-header"><span class="stelle-star" aria-hidden="true">✦</span><div><strong>星</strong><small id="stelle-status" role="status">在这里，随时能聊。</small></div><button id="stelle-settings-toggle" type="button" aria-label="连接与偏好设置" aria-expanded="false">⚙</button><button id="stelle-close" type="button" aria-label="收起聊天">−</button></header>
    <form id="stelle-settings" hidden>
-    <div id="stelle-byok"><label>服务商<select id="stelle-provider"><option value="deepseek">DeepSeek</option><option value="qwen">千问（北京地域）</option></select></label><label>模型<input id="stelle-model" value="deepseek-v4-flash" maxlength="80" autocomplete="off"></label><label>你的 API Key<input id="stelle-key" type="password" autocomplete="off" maxlength="512" placeholder="填写后连接"></label><label class="stelle-check"><input id="stelle-remember-key" type="checkbox" checked>在本标签页记住 API Key</label><p class="stelle-note">浏览器直连所选服务商，费用由你的账户承担。勾选后密钥保存在本标签页的会话存储中，关闭标签页或清除会话后删除；对话及相关公开资料会发给该服务商。</p></div>
     <label class="stelle-check"><input id="stelle-auto-intro" type="checkbox" checked>切换页面时介绍一下</label>
-    <div class="stelle-settings-actions"><button type="submit">连接</button><button id="stelle-clear" type="button">清除会话与凭证</button></div>
+    <details id="stelle-byok"><summary>用自己的 API Key（可选）</summary><label>服务商<select id="stelle-provider"><option value="deepseek">DeepSeek</option><option value="qwen">千问（北京地域）</option></select></label><label>模型<input id="stelle-model" value="deepseek-v4-flash" maxlength="80" autocomplete="off"></label><label>你的 API Key<input id="stelle-key" type="password" autocomplete="off" maxlength="512" placeholder="不填则使用免费通道"></label><label class="stelle-check"><input id="stelle-remember-key" type="checkbox" checked>在本标签页记住 API Key</label><p class="stelle-note">默认通过 WorkBuddy 云端聊天，本浏览器每天最多尝试 30 次，实际可用量也受云端额度限制。填写 Key 后浏览器直连所选服务商，费用由你的账户承担。对话及相关公开资料会发送至所用通道；勾选后 Key 存在本标签页会话中，可主动清除。</p></details>
+    <div class="stelle-settings-actions"><button type="submit">保存</button><button id="stelle-use-cloud" type="button">切回免费通道</button><button id="stelle-clear" type="button">清除会话与凭证</button></div>
    </form>
-   <div id="stelle-messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions"></div>
-   <div id="stelle-suggestions"><button type="button" data-prompt="介绍一下这页">介绍这页</button><button type="button" data-prompt="Anthony最近在忙什么？">他的近况</button></div>
+   <div class="stelle-bubble"><div id="stelle-messages" role="log" aria-label="对话记录" aria-live="polite" aria-relevant="additions"></div></div>
+   <div id="stelle-suggestions"><button type="button" data-prompt="介绍一下这页">介绍这页</button><button type="button" data-prompt="Anthony最近在忙什么？">他的近况</button><button type="button" data-prompt="你是谁？">你是谁</button></div>
    <form id="stelle-compose"><label class="stelle-sr" for="stelle-input">想和星说什么？</label><textarea id="stelle-input" rows="1" maxlength="2000" placeholder="想聊什么？" enterkeyhint="send"></textarea><button id="stelle-send" type="submit" aria-label="发送消息">↑</button><button id="stelle-stop" type="button" hidden>停止</button></form>
    <p class="stelle-footnote">AI 的回答可能有误 · 关于 Anthony 的信息以公开资料为准</p>
   </section>
-  <div id="live2d-portrait" aria-hidden="true"><canvas id="live2d-canvas" width="320" height="230"></canvas></div>
+  <div class="live2d-stage">
+   <div id="live2d-portrait" role="button" tabindex="0" aria-label="戳一戳星，换个表情"><canvas id="live2d-canvas" width="320" height="230" aria-hidden="true"></canvas></div>
+   <img id="stelle-birthday-hat" src="{{ '/assets/birthday/party-hat.svg' | relative_url }}" alt="" aria-hidden="true" hidden>
+   <button id="live2d-retry" type="button" hidden>星暂时没加载出来 · 点击重试</button>
+  </div>
   <div class="live2d-actions"><button id="live2d-greet" type="button" aria-controls="stelle-chat" aria-expanded="false"><span aria-hidden="true">✦</span> 和星聊聊</button><button id="live2d-hide" type="button" aria-label="隐藏看板娘">×</button></div>
  </div>
- <button id="live2d-show" type="button" aria-controls="live2d-panel" aria-expanded="false" hidden>✦ 星</button>
+ <button id="live2d-show" type="button" aria-controls="live2d-panel" aria-expanded="false" hidden>✦ 看板娘</button>
 </aside>
+{% include birthday.html %}
 <script defer src="{{ '/assets/js/live2d.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script defer src="{{ '/assets/js/stelle-direct.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/stelle-cloud.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/stelle-performance.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 <script defer src="{{ '/assets/js/stelle-chat.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
+<script defer src="{{ '/assets/js/birthday.js' | relative_url }}?v={{ site.time | date: '%s' }}"></script>
 {% endif %}

@@ -1,6 +1,10 @@
 #live2d-companion{--stelle-bg:var(--global-bg-color,#fff);--stelle-ink:var(--global-text-color,#29313b);--stelle-line:color-mix(in srgb,var(--stelle-ink) 15%,transparent);--stelle-gold:#ad8745;position:fixed;right:22px;bottom:12px;width:320px;z-index:30;pointer-events:none;font:13px/1.65 system-ui,sans-serif;color:var(--stelle-ink)}
 #live2d-companion[hidden],#live2d-companion [hidden]{display:none!important}
-#live2d-portrait{height:230px;overflow:hidden;mask-image:linear-gradient(to bottom,#000 94%,transparent)}
+.live2d-stage{position:relative}
+#stelle-birthday-hat{position:absolute;width:88px;height:auto;left:50%;top:-52px;transform:translateX(-50%) rotate(-10deg);transform-origin:50% 92%;pointer-events:none;filter:drop-shadow(0 3px 3px #0003);z-index:1}
+#live2d-companion:not([data-state=ready]) #stelle-birthday-hat{visibility:hidden}
+#live2d-retry{position:absolute;bottom:20px;left:10%;width:80%;font-size:12px!important}
+#live2d-portrait{height:230px;overflow:hidden;pointer-events:auto;cursor:pointer;mask-image:linear-gradient(to bottom,#000 94%,transparent)}
 #live2d-canvas{display:block;width:100%;height:100%;pointer-events:none}
 #live2d-companion button,#live2d-companion input,#live2d-companion select,#live2d-companion textarea{font:inherit;color:inherit;margin:0;box-sizing:border-box}
 #live2d-companion button{pointer-events:auto;cursor:pointer;border:1px solid var(--stelle-line);background:var(--stelle-bg);border-radius:12px;padding:6px 11px;min-height:34px;box-shadow:none}
@@ -31,12 +35,104 @@
 #stelle-send{background:var(--stelle-ink)!important;color:var(--stelle-bg)!important;border:0!important;width:34px;flex-shrink:0;font-size:20px!important;padding:0!important}
 .stelle-footnote{font-size:10px!important;opacity:.55;text-align:center;margin:8px 10px 11px!important}
 #stelle-settings{padding:13px 16px;overflow-y:auto;border-bottom:1px solid var(--stelle-line);max-height:290px;margin:0}
+#stelle-byok{border:1px solid var(--stelle-line);border-radius:10px;padding:9px 11px;margin-bottom:9px}
+#stelle-byok summary{cursor:pointer;font-size:12px;opacity:.85;list-style:none}
+#stelle-byok summary::-webkit-details-marker{display:none}
+#stelle-byok summary::before{content:"▸ ";color:var(--stelle-gold)}
+#stelle-byok[open] summary::before{content:"▾ "}
+#stelle-byok[open]{padding-bottom:6px}
 #stelle-settings label{display:block;font-size:12px;margin-bottom:9px}#stelle-settings input:not([type=checkbox]),#stelle-settings select{display:block;width:100%;padding:7px 9px;background:var(--stelle-bg);border:1px solid var(--stelle-line);border-radius:8px;margin-top:4px;box-shadow:none;height:auto}
-.stelle-note{font-size:11px!important;opacity:.7;margin:7px 0!important}.stelle-check{display:flex!important;align-items:center;gap:8px}.stelle-settings-actions{display:flex;gap:8px}.stelle-settings-actions button{font-size:11px!important}
+.stelle-note{font-size:11px!important;opacity:.7;margin:7px 0!important}.stelle-check{display:flex!important;align-items:center;gap:8px}.stelle-settings-actions{display:flex;gap:8px;flex-wrap:wrap}.stelle-settings-actions button{font-size:11px!important}
 .stelle-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
 #stelle-chat.settings-open #stelle-messages,#stelle-chat.settings-open #stelle-compose,#stelle-chat.settings-open #stelle-suggestions,#stelle-chat.settings-open .stelle-footnote{display:none}
 #stelle-chat.settings-open #stelle-settings{max-height:none;min-height:0}
 #live2d-companion strong{color:inherit}
 @media(min-width:1500px){#live2d-companion{width:350px;right:40px}#live2d-portrait{height:247px}}
 @media(max-height:700px){#stelle-chat{bottom:75px;right:270px;max-height:calc(100dvh - 40px)}}
-@media(max-width:1023px),print{#live2d-companion{display:none!important}}
+@media(max-width:1023px){
+ #live2d-companion{width:190px;right:12px;bottom:max(12px,env(safe-area-inset-bottom));font-size:13px}
+ #live2d-portrait{height:140px}
+ #stelle-birthday-hat{width:54px;top:-32px}
+ #stelle-chat{position:fixed;z-index:2;left:12px;right:12px;bottom:calc(var(--stelle-keyboard,0px) + 12px);width:auto;max-height:calc(var(--stelle-vh,100dvh) - 24px);border-radius:18px;box-shadow:0 12px 60px #0004}
+ #stelle-messages{max-height:calc(var(--stelle-vh,100dvh) - 230px);min-height:70px;flex:1}
+ #stelle-input{font-size:16px}
+ #stelle-intro{right:0;bottom:100%;width:min(280px,calc(100vw - 24px))}
+ #live2d-companion[data-chat-open=true] .live2d-stage,#live2d-companion[data-chat-open=true] .live2d-actions{visibility:hidden}
+ #live2d-show{min-height:44px;border-radius:24px;background:var(--stelle-bg);box-shadow:0 3px 18px #0002}
+ #stelle-suggestions{flex-wrap:wrap}
+ .stelle-header button{min-width:38px;min-height:38px!important}
+}
+@media print{#live2d-companion{display:none!important}}
+
+/* One conversation, two views: immersive shows only the current reply. */
+.stelle-mode-control{display:flex;align-items:center;justify-content:flex-end;gap:8px;padding:9px 16px 4px;font-size:11px;flex-shrink:0;pointer-events:auto}
+.stelle-mode-alternative{opacity:.55}
+.stelle-mode-switch{display:inline-flex;position:relative;width:36px;height:21px;cursor:pointer;margin:0}
+#live2d-companion .stelle-mode-switch input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.stelle-mode-switch span{width:36px;height:21px;border-radius:20px;background:#b19359;pointer-events:none;box-shadow:inset 0 0 0 1px #0001}
+.stelle-mode-switch span:after{content:"";display:block;width:15px;height:15px;margin:3px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0003;transition:transform .18s}
+.stelle-mode-switch input:checked+span{background:#64748b}
+.stelle-mode-switch input:checked+span:after{transform:translateX(15px)}
+.stelle-mode-switch input:focus-visible+span{outline:2px solid var(--stelle-gold);outline-offset:3px}
+#live2d-companion[data-chat-mode=immersive] #stelle-chat{right:calc(100% + 12px);bottom:30px;width:340px;max-height:calc(100dvh - 55px);border:0;background:transparent;box-shadow:none;overflow:visible;border-radius:0}
+#live2d-companion[data-chat-mode=immersive] .stelle-header{padding:4px 10px 10px;border:0;background:var(--stelle-bg);border-radius:0 0 12px 12px;margin-bottom:8px}
+#live2d-companion[data-chat-mode=immersive] .stelle-mode-control{background:var(--stelle-bg);border-radius:12px 12px 0 0}
+#live2d-companion[data-chat-mode=immersive] .stelle-header strong{font-size:13px}
+#live2d-companion[data-chat-mode=immersive] .stelle-header small{font-size:10px}
+#live2d-companion[data-chat-mode=immersive] .stelle-star{font-size:19px}
+#live2d-companion[data-chat-mode=immersive] #stelle-messages{position:relative;min-height:65px;max-height:260px;margin:0 0 16px;padding:17px 20px;border:1px solid var(--stelle-line);border-radius:20px 20px 4px 20px;background:var(--stelle-bg);box-shadow:0 8px 28px #00000014;flex:0 1 auto}
+#live2d-companion[data-chat-mode=immersive] .stelle-message{display:none;margin:0;padding:0;font-size:14px}
+#live2d-companion[data-chat-mode=immersive] .stelle-message[data-current=true]{display:block}
+#live2d-companion[data-chat-mode=immersive] .stelle-message[data-current=true]:empty:before{content:"…";color:var(--stelle-gold);letter-spacing:4px}
+#live2d-companion[data-chat-mode=immersive] .stelle-message[data-role=notice]{font-size:12px;margin-top:7px}
+#live2d-companion[data-chat-mode=immersive] #stelle-suggestions{display:none}
+#live2d-companion[data-chat-mode=immersive] #stelle-compose{margin:0;background:var(--stelle-bg);box-shadow:0 4px 18px #0000000d;flex-shrink:0}
+#live2d-companion[data-chat-mode=immersive] .stelle-footnote{font-size:9px!important;margin-bottom:0!important}
+#live2d-companion[data-chat-mode=immersive] #stelle-settings{background:var(--stelle-bg);border:1px solid var(--stelle-line);border-radius:16px}
+#live2d-companion[data-chat-mode=immersive] #stelle-chat.settings-open #stelle-messages{display:none}
+@media(max-width:1023px){
+ #live2d-companion[data-chat-mode=immersive] #stelle-chat{left:12px;right:12px;bottom:calc(var(--stelle-keyboard,0px) + 12px);width:auto;max-height:calc(var(--stelle-vh,100dvh) - 24px)}
+ #live2d-companion[data-chat-mode=immersive] #stelle-messages{margin-right:138px;max-height:calc(var(--stelle-vh,100dvh) - 210px);min-height:70px;padding:13px 15px}
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] .live2d-stage{visibility:visible;position:fixed;right:8px;bottom:calc(var(--stelle-keyboard,0px) + 115px);width:130px}
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] #live2d-portrait{height:105px}
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] #stelle-birthday-hat{width:42px;top:-24px}
+ #live2d-companion[data-chat-mode=immersive] .stelle-header{padding-bottom:8px}
+ #live2d-companion[data-chat-mode=immersive] .stelle-header{margin-right:138px}
+ #live2d-companion[data-chat-mode=immersive]:has(#stelle-chat.settings-open) .live2d-stage{visibility:hidden}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] .live2d-stage{visibility:hidden}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] #stelle-messages{margin-right:0;min-height:40px}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] .stelle-header{margin-right:0}
+}
+@media(max-width:1023px) and (max-height:500px){
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] .live2d-stage{visibility:hidden}
+ #live2d-companion[data-chat-mode=immersive] #stelle-messages{margin-right:0;min-height:40px}
+}
+@media(prefers-reduced-motion:reduce){.stelle-mode-switch span:after{transition:none}}
+
+/* Immersive layout: character-anchored speech, with a separate input dock. */
+.stelle-bubble{display:contents}
+#live2d-companion[data-chat-mode=immersive][data-chat-open=true] .live2d-stage{margin-bottom:122px}
+#live2d-companion[data-chat-mode=immersive][data-chat-open=true] .live2d-actions{display:none}
+#live2d-companion[data-chat-mode=immersive] #stelle-chat{right:0;bottom:0;width:320px;max-height:none;display:flex;pointer-events:none}
+#live2d-companion[data-chat-mode=immersive] .stelle-header{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);border:0}
+#live2d-companion[data-chat-mode=immersive] .stelle-mode-control{order:2;justify-content:center;gap:7px;background:transparent;border-radius:0;padding:8px 0 0;text-shadow:0 1px var(--stelle-bg)}
+#live2d-companion[data-chat-mode=immersive] .stelle-mode-control button{min-height:28px;width:28px;padding:0;border:0;border-radius:50%;font-size:16px;background:var(--stelle-bg)}
+#live2d-companion[data-chat-mode=immersive] .stelle-bubble{display:block;position:absolute;right:calc(100% - 42px);bottom:calc(100% + 100px);width:285px;pointer-events:auto;filter:drop-shadow(0 5px 12px #00000016)}
+#live2d-companion[data-chat-mode=immersive] .stelle-bubble:after{content:"";position:absolute;right:-21px;bottom:18px;width:25px;height:23px;background:var(--stelle-bg);clip-path:polygon(0 0,100% 100%,0 72%);pointer-events:none}
+#live2d-companion[data-chat-mode=immersive] #stelle-messages{margin:0;min-height:0;max-height:min(260px,calc(100dvh - 330px));padding:17px 20px;border-radius:23px;border:0;box-shadow:none;background:var(--stelle-bg)}
+#live2d-companion[data-chat-mode=immersive] .stelle-message p:last-child{margin-bottom:0}
+#live2d-companion[data-chat-mode=immersive] #stelle-compose{order:1;pointer-events:auto}
+#live2d-companion[data-chat-mode=immersive] .stelle-footnote{order:3}
+#live2d-companion[data-chat-mode=immersive] #stelle-settings{pointer-events:auto;max-height:calc(var(--stelle-vh,100dvh) - 100px)}
+#live2d-companion[data-chat-mode=immersive] #stelle-chat.settings-open .stelle-bubble{display:none}
+@media(max-width:1023px){
+ #live2d-companion[data-chat-mode=immersive] #stelle-chat{position:fixed;left:12px;right:12px;bottom:calc(var(--stelle-keyboard,0px) + 12px);width:auto;max-height:calc(var(--stelle-vh,100dvh) - 24px)}
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] .live2d-stage{margin:0;right:12px;bottom:calc(var(--stelle-keyboard,0px) + 124px);width:150px}
+ #live2d-companion[data-chat-mode=immersive][data-chat-open=true] #live2d-portrait{height:120px}
+ #live2d-companion[data-chat-mode=immersive] .stelle-bubble{left:0;right:auto;bottom:calc(100% + 60px);width:calc(100% - 164px)}
+ #live2d-companion[data-chat-mode=immersive] #stelle-messages{margin:0;padding:13px 15px;min-height:0;max-height:calc(var(--stelle-vh,100dvh) - 255px)}
+ #live2d-companion[data-chat-mode=immersive] .stelle-bubble:after{bottom:16px}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] .stelle-bubble{bottom:calc(100% + 15px);width:calc(100% - 12px)}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] .stelle-bubble:after{display:none}
+ #live2d-companion[data-chat-mode=immersive][data-compact-viewport=true] #stelle-messages{max-height:calc(var(--stelle-vh,100dvh) - 180px);min-height:0}
+}

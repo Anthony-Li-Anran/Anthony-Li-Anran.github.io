@@ -1,1 +1,6 @@
-[]
+[
+  {"public":true,"text":"创智学院的 Data Agent 实习收官，AI Eval 基准框架和「创智找人」Agent 都交付完了，回到学校专注课程和科研。","topics":["实习","创智学院","Data Agent","AI Eval"],"occurred_at":"2026-10-09T18:00:00+08:00","confirmed_at":"2026-10-09T18:00:00+08:00","expires_at":null},
+  {"public":true,"text":"10 月 14 日是他的生日，个人网站也定在那一天正式发布，我就是在这次改版里上线的。","topics":["生日","发布","网站","星"],"occurred_at":"2026-10-10T10:00:00+08:00","confirmed_at":"2026-10-10T10:00:00+08:00","expires_at":null},
+  {"public":true,"text":"Thesis-Studio 在持续迭代：多智能体分工和状态管理已经稳了，正在规划接入文献里的贝叶斯实验设计，自动生成和挑选实验方案。","topics":["Thesis-Studio","开源","多智能体","贝叶斯"],"occurred_at":"2026-10-05T21:00:00+08:00","confirmed_at":"2026-10-05T21:00:00+08:00","expires_at":null},
+  {"public":true,"text":"和滕佳烨老师组的 MAD-BLCP 局部化共形预测研究在推进，理论部分卡在一个有限样本覆盖的证明上，慢慢磨。目标还是 UAI 2027。","topics":["科研","共形预测","MAD-BLCP","UAI"],"occurred_at":"2026-09-30T20:00:00+08:00","confirmed_at":"2026-09-30T20:00:00+08:00","expires_at":null}
+]

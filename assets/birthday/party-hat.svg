@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140" fill="none">
+ <defs>
+  <linearGradient id="hat" x1="27" y1="42" x2="95" y2="123" gradientUnits="userSpaceOnUse"><stop stop-color="#51668e"/><stop offset="1" stop-color="#222d48"/></linearGradient>
+  <linearGradient id="gold" x1="10" y1="118" x2="109" y2="127" gradientUnits="userSpaceOnUse"><stop stop-color="#b18a46"/><stop offset=".46" stop-color="#ffe1a0"/><stop offset="1" stop-color="#c29a52"/></linearGradient>
+  <clipPath id="cone"><path d="M59 19 15 120Q59 140 106 120L63 19Z"/></clipPath>
+ </defs>
+ <path d="M59 19 15 120Q59 140 106 120L63 19Z" fill="url(#hat)" stroke="#e1be7a" stroke-width="2"/>
+ <g clip-path="url(#cone)" stroke="#ebc784" stroke-width="8" opacity=".85"><path d="m20 57 83 30M8 91l96 35"/></g>
+ <path d="m67 89 2 6 6 2-6 2-2 6-2-6-6-2 6-2Z" fill="#fff1c8"/>
+ <circle cx="53" cy="58" r="3" fill="#fff1c8"/>
+ <path d="M16 117q43 18 89 0l4 9q-49 22-97 0Z" fill="url(#gold)" stroke="#b78b46" stroke-width="1.5"/>
+ <path d="m61 3 4 9 10 1-7 7 1 10-8-5-9 5 2-10-8-7 11-1Z" fill="url(#gold)" stroke="#ffe2a7" stroke-width="1.5"/>
+</svg>

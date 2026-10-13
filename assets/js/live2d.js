@@ -9,9 +9,12 @@
   const show = document.getElementById('live2d-show');
   const hide = document.getElementById('live2d-hide');
   const greet = document.getElementById('live2d-greet');
+  const hat = document.getElementById('stelle-birthday-hat');
+  const retry = document.getElementById('live2d-retry');
 
 
   let expressionName = 'Neutral', gesture = 'none', gestureStart = 0;
+  let talkLevel = 0, talking = false, speechLevel = null, idleTimer = 0;
   const desktop = matchMedia('(min-width: 1024px)');
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const storageKey = 'anthony-live2d-hidden';
@@ -19,9 +22,11 @@
   let app, model, physics, loading = false, active = false;
   const hairParameters = ['ParamHairFront', 'ParamHairSide', 'ParamHairSideR', 'ParamHairBack', 'ParamHairFluffy'];
   let dismissed = reduced.matches;
+  let mobileExpanded = false;
   let last = 0, blinkStart = -100;
   let expressionData, expressionUntil = 0;
   let expressionTarget = {}, expressionCurrent = {};
+  let lastTap = 0, lastTapName = '';
   let target = { x: 0, y: 0 }, pointer = { x: 0, y: 0 };
   try {
     const saved = localStorage.getItem(storageKey);
@@ -37,6 +42,7 @@
     expressionTarget = { ...expressionData.defaults, ...expressionData.presets[name].values };
     expressionUntil = duration ? performance.now() + duration : Infinity;
     expressionName = name;
+    companion.dataset.expression = name;
   }
 
   function fit() {
@@ -49,12 +55,12 @@
   }
 
   function syncVisibility() {
-    companion.hidden = !desktop.matches;
-    const visible = desktop.matches && !dismissed && Boolean(model);
+    companion.hidden = false;
+    const visible = !dismissed && (desktop.matches || mobileExpanded);
     panel.hidden = !visible;
     show.hidden = visible;
     show.setAttribute('aria-expanded', String(visible));
-    active = visible && !document.hidden;
+    active = visible && Boolean(model) && !document.hidden;
     if (app) {
       if (active) {
         last = performance.now() / 1000;
@@ -87,6 +93,15 @@
     return pending;
   }
 
+  async function whenLive2D() {
+    // The display bundle attaches Live2DModel asynchronously after script eval.
+    for (let i = 0; i < 100; i++) {
+      if (window.PIXI && window.PIXI.live2d && window.PIXI.live2d.Live2DModel) return;
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    throw new Error('Live2D runtime did not finish registering');
+  }
+
   function blink(elapsed) {
     const smooth = x => x * x * (3 - 2 * x);
     if (elapsed < 0 || elapsed >= .28) return 1;
@@ -101,6 +116,9 @@
     const lerp = 1 - Math.exp(-dt * 12);
     pointer.x += (target.x - pointer.x) * lerp;
     pointer.y += (target.y - pointer.y) * lerp;
+    // Mouth opens in a speech-like rhythm while text is being typed out.
+    const mouthOsc = reduced.matches ? 0 : speechLevel !== null ? speechLevel : talking ? Math.max(0, Math.sin(t * 9.2 + Math.sin(t * 2.7) * 1.5)) * (.5 + .35 * Math.sin(t * 3.1 + 1)) : 0;
+    talkLevel += (mouthOsc - talkLevel) * (1 - Math.exp(-dt * (speechLevel !== null ? 28 : talking ? 30 : 10)));
     if (performance.now() > expressionUntil && expressionName !== 'Neutral') setExpression('Neutral', 0);
     for (const [id,value] of Object.entries(expressionTarget)) {
       const current = expressionCurrent[id] ?? value;
@@ -122,10 +140,14 @@
       ParamEyeBallY: reduced.matches ? 0 : pointer.y,
       ParamBreath: reduced.matches ? 0 : (Math.sin(t * 1.5) + 1) / 2,
       ParamBodyAngleZ: reduced.matches ? 0 : -pointer.x * 1.2 + Math.sin(t * .65) * .4,
-      ParamMouthOpenY: expressionCurrent.ParamMouthOpenY || 0
+      ParamMouthOpenY: speechLevel !== null ? talkLevel * .9 : Math.max(expressionCurrent.ParamMouthOpenY || 0, talkLevel * .9)
     };
     const core = model.internalModel.coreModel;
     for (const [id, value] of Object.entries(values)) core.setParameterValueById(id, value);
+    if (hat && !hat.hidden) {
+      const scale = host.clientHeight / 230;
+      hat.style.transform = `translate(calc(-50% + ${values.ParamAngleX * .22 * scale}px), ${-values.ParamAngleY * .12 * scale}px) rotate(${-10 - values.ParamAngleZ * .6}deg)`;
+    }
     // The preview and website use the same order: input -> native physics -> mesh.
     if (reduced.matches) {
       for (const id of hairParameters) core.setParameterValueById(id, 0);
@@ -133,16 +155,20 @@
   }
 
   async function start() {
-    if (!desktop.matches || dismissed || loading || model) return;
+    if (dismissed || (!desktop.matches && !mobileExpanded) || loading || model) return;
     loading = true;
-    show.disabled = true;
-    show.textContent = '看板娘加载中…';
+    companion.dataset.state = 'loading';
+    retry.hidden = true;
     syncVisibility();
     try {
       const runtime = companion.dataset.runtime;
-      await loadScript(runtime + 'pixi.min.js');
-      await loadScript(runtime + 'live2dcubismcore.min.js');
+      // pixi and the Cubism core are independent and load in parallel; cubism4
+      // checks both globals at eval time to register Live2DModel, so it must run last.
+      const modelWarm = fetch(companion.dataset.model, { credentials: 'omit' }).then(response => response.ok ? null : null).catch(() => null);
+      await Promise.all([runtime + 'pixi.min.js', runtime + 'live2dcubismcore.min.js'].map(loadScript));
       await loadScript(runtime + 'cubism4.min.js');
+      await whenLive2D();
+      await modelWarm;
       window.PIXI.live2d.config.sound = false;
       app = new window.PIXI.Application({
         view: canvas, width: 320, height: 230, backgroundAlpha: 0,
@@ -169,13 +195,14 @@
       app.ticker.maxFPS = 30;
       app.ticker.add(() => model.update(app.ticker.deltaMS));
       companion.dataset.state = 'ready';
-      show.textContent = '显示看板娘';
+      show.textContent = '✦ 看板娘';
+      scheduleIdle();
     } catch (error) {
       if (app) app.destroy(false, { children: true });
       app = model = physics = undefined;
       companion.dataset.state = 'error';
-      show.textContent = '重试看板娘';
-      show.title = '加载失败，点击重试';
+      retry.hidden = false;
+      show.textContent = '✦ 看板娘';
       console.warn('[Live2D] Companion could not load:', error);
     } finally {
       loading = false;
@@ -186,6 +213,7 @@
 
   hide.addEventListener('click', () => {
     dismissed = true;
+    mobileExpanded = false;
     remember();
     companion.dispatchEvent(new CustomEvent('stelle:hide'));
     syncVisibility();
@@ -193,18 +221,58 @@
   });
   show.addEventListener('click', async () => {
     dismissed = false;
+    mobileExpanded = true;
     remember();
     show.removeAttribute('title');
-    await start();
     syncVisibility();
-    if (!panel.hidden) greet.focus();
+    companion.dispatchEvent(new CustomEvent('stelle:open'));
+    start();
   });
+  retry.addEventListener('click', start);
   companion.addEventListener('stelle:perform', event => {
     const intent = event.detail || {};
-    setExpression(intent.expression || 'Neutral', Math.min(8000, Math.max(500, intent.duration || 4500)));
+    setExpression(intent.expression || 'Neutral', Math.min(18000, Math.max(500, intent.duration || 4500)));
     gesture = ['nod', 'tilt'].includes(intent.motion) ? intent.motion : 'none';
     gestureStart = performance.now() / 1000;
   });
+  companion.addEventListener('stelle:talk', event => {
+    talking = Boolean(event.detail?.active);
+    speechLevel = Number.isFinite(event.detail?.level) ? Math.max(0, Math.min(1,event.detail.level)) : null;
+  });
+  function onTap() {
+    if (!model || reduced.matches || companion.dataset.busy === 'true' || companion.dataset.birthdayOpen === 'true') return;
+    const now = performance.now();
+    if (now - lastTap < 500) return;
+    lastTap = now;
+    const pool = ['Question', 'Happy', 'Shy'].filter(name => name !== lastTapName);
+    const picked = pool[Math.floor(Math.random() * pool.length)];
+    lastTapName = picked;
+    setExpression(picked, 1800);
+  }
+  host.addEventListener('click', onTap);
+  host.addEventListener('keydown', event => {
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onTap(); }
+  });
+
+  function scheduleIdle() {
+    // Restrained idle life between conversations: small expressions, occasional drift.
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(idleMoment, 18000 + Math.random() * 24000);
+  }
+  function idleMoment() {
+    scheduleIdle();
+    if (!active || reduced.matches || dismissed || companion.dataset.birthdayOpen === 'true' || companion.dataset.busy === 'true' || (expressionName !== 'Neutral' && performance.now() < expressionUntil)) return;
+    const chatEl = document.getElementById('stelle-chat');
+    if (!chatEl || !chatEl.hidden) return;
+    const roll = Math.random();
+    if (roll < .45) setExpression('Smile', 2600 + Math.random() * 1800);
+    else if (roll < .7) { gesture = 'tilt'; gestureStart = performance.now() / 1000; }
+    else if (roll < .85) setExpression('SoftEyes', 3000 + Math.random() * 2000);
+    else {
+      target = { x: (Math.random() * 2 - 1) * .45, y: (Math.random() * 2 - 1) * .3 };
+      setTimeout(() => { if (!talking) target = { x: 0, y: 0 }; }, 1400 + Math.random() * 1200);
+    }
+  }
 
   function trackAxis(position, origin, extent) {
     const distance = position - origin, room = distance < 0 ? origin : extent - origin;

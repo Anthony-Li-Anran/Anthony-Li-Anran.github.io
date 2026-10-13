@@ -1,0 +1,27 @@
+<link rel="stylesheet" href="{{ '/assets/css/birthday.css' | relative_url }}?v={{ site.time | date: '%s' }}">
+<button id="birthday-launcher" type="button" aria-haspopup="dialog" aria-controls="birthday-dialog" hidden><span aria-hidden="true">✦</span> <span id="birthday-launcher-label">10.14 · 生日快乐</span></button>
+<dialog id="birthday-dialog" lang="zh-CN" aria-labelledby="birthday-title" aria-describedby="birthday-invite" data-confetti="{{ '/assets/birthday/confetti-1.9.4.min.js' | relative_url }}">
+ <canvas id="birthday-confetti" aria-hidden="true"></canvas>
+ <div class="birthday-card">
+  <button id="birthday-close" type="button" aria-label="关闭生日提醒" autofocus>×</button>
+  <header class="birthday-topline"><span>✦ 星的生日小提醒</span><span id="birthday-preview" hidden>预览</span></header>
+  <div class="birthday-art" aria-hidden="true">
+   <div class="birthday-orbit"></div><div class="birthday-orbit birthday-orbit-two"></div>
+   <span class="birthday-spark spark-one">✧</span><span class="birthday-spark spark-two">✦</span><span class="birthday-spark spark-three">✧</span>
+   <span class="birthday-date">10<span>·</span>14</span>
+   <span class="birthday-art-caption">A LITTLE WISH, A SPECIAL DAY</span>
+  </div>
+  <div class="birthday-copy">
+   <p class="birthday-eyebrow">HAPPY BIRTHDAY, ANTHONY</p>
+   <h2 id="birthday-title">今天是 Anthony 的生日。</h2>
+   <p id="birthday-invite">来得正好。要不要留一句祝福给他？</p>
+   <div id="birthday-response" role="status" aria-live="polite" hidden><span aria-hidden="true">✦</span><p>嗯，希望他今天少一点烦恼，多一点开心。<br>也谢谢你，愿意一起庆祝。</p></div>
+   <div class="birthday-buttons">
+    <button id="birthday-wish" type="button"><span aria-hidden="true">✧</span> 生日快乐！</button>
+    <a id="birthday-guestbook" href="{{ '/guestbook/' | relative_url }}">我想写几句 <span aria-hidden="true">↗</span></a>
+   </div>
+   <p class="birthday-note">写下的祝福会留在留言板 · 需要 GitHub 登录</p>
+  </div>
+  <footer class="birthday-footer"><span id="birthday-footer-date">2026 / 10 / 14</span><button id="birthday-dismiss" type="button">继续逛逛 <span aria-hidden="true">→</span></button></footer>
+ </div>
+</dialog>
