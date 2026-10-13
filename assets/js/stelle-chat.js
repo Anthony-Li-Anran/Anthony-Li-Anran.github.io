@@ -167,7 +167,7 @@
     try {
       const request = {message:text,history:preceding,page:location.pathname,usedMemes,
         knowledgeURL:root.dataset.knowledge,contextURL:root.dataset.context,signal:requestController.signal};
-      const transport = credential ? window.StelleDirect.stream({credential,...request}) : window.StelleCloud.stream(request);
+      const transport = credential ? window.StelleDirect.stream({credential,...request}) : window.StelleAlibaba.stream(request);
       for await (const item of transport) {
           if (!current()) throw new DOMException('Stopped','AbortError');
           requestController.signal.throwIfAborted();

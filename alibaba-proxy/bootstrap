@@ -1,0 +1,3 @@
+#!/bin/bash
+# FC Custom Runtime entry point.
+node server.js

@@ -24,3 +24,6 @@ package-lock.json
 companion-api/.env
 companion-api/*.sqlite*
 __pycache__/
+
+# test scripts (local only)
+_tests/

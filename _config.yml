@@ -21,8 +21,12 @@ repository               : "Anthony-Li-Anran/Anthony-Li-Anran.github.io"
 # Site Author - The following control what appear as part of the author content on the side bar.
 live2d:
   enabled: true
-  # Visitors chat through the keyless WorkBuddy cloud LLM; BYOK is an opt-in advanced option in settings.
+  # 免费聊天通道改走自有阿里云 FC 代理（持有百炼 Key，访客免 Key）；BYOK 仍是在设置里可选的进阶选项。
   model: "/assets/live2d/stelle-cubism-20260919/Stelle.model3.json"
+  # alibaba_url 留空时免费通道会提示"代理尚未配置"；部署前需填入真实 FC 地址。
+  stelle:
+    alibaba_url: ""          # 例：https://xxxx.cn-beijing.fc.aliyuncs.com/chat
+    alibaba_token: "stelle-anthony-2026"
 
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.
 #               Additional customization can be done by editing /_includes/author-profile.html

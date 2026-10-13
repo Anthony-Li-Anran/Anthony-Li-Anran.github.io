@@ -1,0 +1,13 @@
+{
+  "name": "stelle-alibaba-proxy",
+  "version": "1.0.0",
+  "description": "Owner-funded Aliyun FC proxy for Anthony's site Stelle chat (DashScope qwen-plus).",
+  "private": true,
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
