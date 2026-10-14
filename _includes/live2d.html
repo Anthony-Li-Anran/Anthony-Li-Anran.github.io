@@ -4,7 +4,7 @@
  data-model="{{ site.live2d.model | relative_url | escape }}"
  data-knowledge="{{ '/assets/stelle-knowledge.json' | relative_url }}" data-context="{{ '/assets/stelle-context.json' | relative_url }}" data-page-title="{{ page.title | default: '首页' | escape }}"
  data-intro="{{ page.companion_intro | escape }}"
- data-runtime="{{ '/assets/live2d/runtime/' | relative_url }}" data-stelle-alibaba-url="{{ site.stelle.alibaba_url | default: '' | escape }}" data-stelle-alibaba-token="{{ site.stelle.alibaba_token | default: 'stelle-anthony-2026' | escape }}" hidden>
+ data-runtime="{{ '/assets/live2d/runtime/' | relative_url }}" data-stelle-alibaba-url="{{ site.live2d.stelle.alibaba_url | default: '' | escape }}" data-stelle-alibaba-token="{{ site.live2d.stelle.alibaba_token | default: 'stelle-anthony-2026' | escape }}" hidden>
  <div id="live2d-panel" hidden>
   <div id="stelle-intro" hidden><button type="button" id="stelle-intro-close" aria-label="关闭介绍">×</button><p id="live2d-message" role="status"></p></div>
   <section id="stelle-chat" aria-label="和星聊天" hidden>
