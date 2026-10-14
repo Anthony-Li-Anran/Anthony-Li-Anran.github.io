@@ -25,7 +25,7 @@ live2d:
   model: "/assets/live2d/stelle-cubism-20260919/Stelle.model3.json"
   # alibaba_url 留空时免费通道会提示"代理尚未配置"；部署前需填入真实 FC 地址。
   stelle:
-    alibaba_url: ""          # 例：https://xxxx.cn-beijing.fc.aliyuncs.com/chat
+    alibaba_url: "https://stelle-proxy-tqfdgncccd.cn-beijing.fcapp.run/chat"          # 例：https://xxxx.cn-beijing.fc.aliyuncs.com/chat
     alibaba_token: "stelle-anthony-2026"
 
 #               If a field is blank the icon and link will not appear, otherwise it will be shown.

@@ -27,3 +27,8 @@ __pycache__/
 
 # test scripts (local only)
 _tests/
+
+# alibaba FC deploy artifact
+alibaba-proxy/*.zip
+
+alibaba-proxy/nodejs/

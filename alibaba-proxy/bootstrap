@@ -1,3 +1,7 @@
 #!/bin/bash
 # FC Custom Runtime entry point.
-node server.js
+# Windows-zipped packages strip the node binary's +x bit, so restore it before
+# launching. Works in both 命令模式 (start command: bash /code/bootstrap) and
+# bash 脚本模式. Paths are absolute because /code is the deployed root.
+chmod +x /code/nodejs/bin/node
+exec /code/nodejs/bin/node /code/server.js
